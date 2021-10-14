@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 962f3523200904741b9efbccfe880c79
+guid: a74cf9b15552fc243b0b8df7b47a7c0b
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -100,12 +100,12 @@ TextureImporter:
       name: slime_test_0
       rect:
         serializedVersion: 2
-        x: 461
-        y: 413
-        width: 449
-        height: 411
+        x: 445
+        y: 403
+        width: 478
+        height: 430
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -121,12 +121,12 @@ TextureImporter:
       name: slime_test_1
       rect:
         serializedVersion: 2
-        x: 1021
-        y: 434
-        width: 488
-        height: 348
+        x: 1004
+        y: 424
+        width: 519
+        height: 367
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
