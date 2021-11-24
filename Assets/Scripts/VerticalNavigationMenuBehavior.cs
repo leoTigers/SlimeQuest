@@ -44,8 +44,8 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
             switch (selected)
             {
                 case 0:
-                    EnemySelectBehavior esb = FindObjectOfType<EnemySelectBehavior>();
-                    esb.SetActive(true);
+                    EnemySelectBehavior esb = FindObjectOfType<FightManager>().GetComponent<EnemySelectBehavior>();
+                    esb.SetActive(true); 
                     break;
                 default:
                     SetActive(true);

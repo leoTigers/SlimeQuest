@@ -12,6 +12,7 @@ public class EnemySelectBehavior : MonoBehaviour
     public Text enemyNameTxt;
     private int enemyCount;
     private int selected;
+    private bool frameLock;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,13 +22,15 @@ public class EnemySelectBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(selected);
+        if (frameLock)
+        {
+            frameLock = false;
+            return;
+        }
         if (!isActive)
             return;
 
         enemyCount = EnemyListComponent.transform.childCount;
-        cursor.SetActive(isActive);
-        enemyNameBox.SetActive(isActive);
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -49,7 +52,8 @@ public class EnemySelectBehavior : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
-            isActive = false;
+            Debug.Log("Selected: " + selected);
+            //isActive = false;
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -67,5 +71,6 @@ public class EnemySelectBehavior : MonoBehaviour
         isActive = active;
         cursor.SetActive(active);
         enemyNameBox.SetActive(active);
+        frameLock = true;
     }
 }

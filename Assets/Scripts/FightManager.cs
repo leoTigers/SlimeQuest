@@ -18,17 +18,17 @@ public class FightManager : MonoBehaviour
         enemies = new List<FightingEntity>();
         player = new FightingEntity("Slime", 6, 69, 6, 25, Status.CONFUSED);
         enemies.Add(new FightingEntity("Plant", 10, 10, 10, 10, Status.NONE,
-            "Assets/Resource/flower_enemy_v1.png"));
+            "Sprites/flower_enemy_v1"));
         enemies.Add(new FightingEntity("Bird", 10, 10, 10, 10, Status.NONE,
-            "Assets/Resource/fire_bird_enemy_v1.png"));
+            "Sprites/fire_bird_enemy_v1"));
         enemies.Add(new FightingEntity("Lion", 10, 10, 10, 10, Status.NONE,
-            "Assets/Resource/lion_enemy.png"));
+            "Sprites/lion_enemy"));
         enemies.Add(new FightingEntity("Meduse", 10, 10, 10, 10, Status.NONE,
-            "Assets/Resource/meduse_enemy.png"));
+            "Sprites/meduse_enemy"));
         enemies.Add(new FightingEntity("Siren", 10, 10, 10, 10, Status.NONE,
-            "Assets/Resource/siren_enemy.png"));
+            "Sprites/siren_enemy"));
         enemies.Add(new FightingEntity("I AM GROOT", 10, 10, 10, 10, Status.NONE,
-            "Assets/Resource/treant_enemy_v1.png"));
+            "Sprites/treant_enemy_v1"));
 
         foreach (FightingEntity Fe in FightManager.enemies)
         {
@@ -37,10 +37,7 @@ public class FightManager : MonoBehaviour
                 GameObject go = new GameObject(Fe.Name);
 
                 Image renderer = go.AddComponent<Image>();
-                Texture2D tex = LoadPNG(Fe.Sp);
-                Sprite sprite = Sprite.Create(tex, 
-                    new Rect(0, 0, tex.width, tex.height), 
-                    new Vector2(0.5f, 0.5f));
+                Sprite sprite = Resources.Load<Sprite>(Fe.Sp);
                 renderer.sprite = sprite;
                 go.transform.SetParent(contentComponent.transform);
                 go.transform.localScale *= 3;
