@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+
+    public CharacterStatistics cs;
+    
     //
     private float movementSpeed = 10f;
 
@@ -24,6 +28,8 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (SceneManager.sceneCount > 1)
+            return;
         //get the Input from Horizontal axis
         float horizontalInput = Input.GetAxis("Horizontal");
         //get the Input from Vertical axis

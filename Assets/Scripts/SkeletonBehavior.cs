@@ -23,7 +23,9 @@ public class SkeletonBehavior : MonoBehaviour
         Debug.Log("Collided with: " + otherObj);
         if(otherObj.name == "Player")
         {
-            SceneManager.LoadScene("Fight", LoadSceneMode.Additive);
+            FindObjectOfType<AudioListener>().enabled = false;
+            SceneManager.LoadSceneAsync("Fight", LoadSceneMode.Additive);
+
         }
     }
 }

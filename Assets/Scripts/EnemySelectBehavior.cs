@@ -25,6 +25,10 @@ public class EnemySelectBehavior : MonoBehaviour
         if (frameLock)
         {
             frameLock = false;
+
+            selected = 0;
+            while (FightManager.enemies[selected].hp == 0)
+                selected++;
             return;
         }
         if (!isActive)
@@ -38,7 +42,7 @@ public class EnemySelectBehavior : MonoBehaviour
             do
             {
                 selected = (selected + 1) % enemyCount;
-            } while (selected != originalSelection && FightManager.enemies[selected].Hp == 0);
+            } while (selected != originalSelection && FightManager.enemies[selected].hp == 0);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -48,11 +52,14 @@ public class EnemySelectBehavior : MonoBehaviour
                 selected--;
                 if (selected < 0)
                     selected = enemyCount - 1;
-            } while (selected != originalSelection && FightManager.enemies[selected].Hp == 0);
+            } while (selected != originalSelection && FightManager.enemies[selected].hp == 0);
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
             Debug.Log("Selected: " + selected);
+            FindObjectOfType<FightManager>().Attack(FightManager.player, selected);
+            FightManager.playerTurnEnd = true;
+            SetActive(false);
             //isActive = false;
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
@@ -63,7 +70,7 @@ public class EnemySelectBehavior : MonoBehaviour
         }
         Vector3 offset = new Vector3( 0, 100, 0 );
         cursor.transform.position = EnemyListComponent.transform.GetChild(selected).transform.position + offset;
-        enemyNameTxt.text = FightManager.enemies[selected].Name;
+        enemyNameTxt.text = FightManager.enemies[selected].name;
     }
 
     public void SetActive(bool active)

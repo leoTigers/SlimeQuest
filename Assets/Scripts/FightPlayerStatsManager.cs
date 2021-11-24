@@ -12,7 +12,7 @@ public class FightPlayerStatsManager : MonoBehaviour
     public Text playerHPTxt;
     public Text playerMPTxt;
     public Text playerStatusTxt;
-    private FightingEntity player;
+    private Entity player;
 
     void Start()
     {
@@ -23,21 +23,21 @@ public class FightPlayerStatsManager : MonoBehaviour
     void Update()
     {
         player = FightManager.player;
-        playerNameTxt.text = player.Name;
+        playerNameTxt.text = player.name;
 
-        playerHPTxt.text = "HP: " + player.Hp.ToString() + "/" + player.HpMax.ToString();
-        if (((float)player.Hp / player.HpMax) <= 0.1)
+        playerHPTxt.text = "HP: " + player.hp.ToString() + "/" + player.hpMax.ToString();
+        if (((float)player.hp / player.hpMax) <= 0.1)
             playerHPTxt.color = Color.red;
-        else if (((float)player.Hp / player.HpMax) <= 0.25)
+        else if (((float)player.hp / player.hpMax) <= 0.25)
             playerHPTxt.color = Color.yellow;
-        playerMPTxt.text = "MP: " + player.Mp.ToString() + "/" + player.MpMax.ToString();
-        if (((float)player.Mp / player.MpMax) <= 0.1)
+        playerMPTxt.text = "MP: " + player.mp.ToString() + "/" + player.mpMax.ToString();
+        if (((float)player.mp / player.mpMax) <= 0.1)
             playerMPTxt.color = Color.red;
-        else if (((float)player.Mp / player.MpMax) <= 0.25)
+        else if (((float)player.mp / player.mpMax) <= 0.25)
             playerMPTxt.color = Color.yellow;
 
         string statusText = "";
-        switch(player.EntityStatus)
+        switch(player.entityStatus)
         {
             case Status.NONE:
                 break;

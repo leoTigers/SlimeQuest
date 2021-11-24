@@ -11,42 +11,72 @@ public enum Status
     POISONED,
     PARALIZED,
     CONFUSED,
-    BURNED
+    BURNED,
+    DEAD
 }
 
-public struct FightingEntity
+public class Entity
 {
-    public FightingEntity(string _name, int _hp, int _hpMax, int _mp, int _mpMax, Status _status)
+    public string name;
+    public int hp, hpMax;
+    public int mp, mpMax;
+
+    public int physicalAtt, physicalDef;
+    public int magicalAtt, magicalDef;
+    public int speed, luck;
+    public int level, xp, xpToNextLevel;
+    public Status entityStatus;
+    // Sprite location
+    public string spriteLocation;
+
+    public Entity(string name, int hpMax, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, int level, string spriteLocation)
     {
-        Name = _name;
-        Hp = _hp;
-        HpMax = _hpMax;
-        Mp = _mp;
-        MpMax = _mpMax;
-        EntityStatus = _status;
-        Sp = null;
+        this.name = name;
+        this.hpMax = hpMax;
+        this.hp = hpMax;
+        this.mpMax = mpMax;
+        this.mp = mpMax;
+        this.physicalAtt = physicalAtt;
+        this.physicalDef = physicalDef;
+        this.magicalAtt = magicalAtt;
+        this.magicalDef = magicalDef;
+        this.speed = speed;
+        this.luck = luck;
+        this.level = level;
+        this.spriteLocation = spriteLocation;
     }
-    public FightingEntity(string _name, int _hp, int _hpMax, int _mp, int _mpMax, Status _status, string _sp)
+
+    public Entity(string name, int hp, int hpMax, int mp, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, Status entityStatus, string spriteLocation)
     {
-        Name = _name;
-        Hp = _hp;
-        HpMax = _hpMax;
-        Mp = _mp;
-        MpMax = _mpMax;
-        EntityStatus = _status;
-        Sp = _sp;
+        this.name = name;
+        this.hp = hp;
+        this.hpMax = hpMax;
+        this.mp = mp;
+        this.mpMax = mpMax;
+        this.physicalAtt = physicalAtt;
+        this.physicalDef = physicalDef;
+        this.magicalAtt = magicalAtt;
+        this.magicalDef = magicalDef;
+        this.speed = speed;
+        this.luck = luck;
+        this.entityStatus = entityStatus;
+        this.spriteLocation = spriteLocation;
     }
 
-    public string Name { get; set; }
-    public int Hp { get; set; }
-    public int HpMax { get; set; }
-    public int Mp { get; set; }
-    public int MpMax { get; set; }
-    public Status EntityStatus { get; set; }
-    public string Sp { get; set; }
+    /**
+     * Reduce hp by the amount
+     * Return true if this result in a death, false otherwise
+     * */
+    public bool TakeDamage(int amount)
+    {
+        hp -= amount;
+        if (hp < 0)
+        {
+            hp = 0;
+            entityStatus = Status.DEAD;
+            return true;
+        }
+        return false;
+    }
 }
-public class FightEntity
-{
 
-
-}
