@@ -18,7 +18,7 @@ public class FightManager : MonoBehaviour
 
     private List<Entity> turnList;
     private int turn;
-    static public bool playerTurnStarted, playerTurnEnd;
+    static public bool playerInMenu, playerTurnEnd;
     void Start()
     {
         enemies = new List<Entity>();
@@ -43,47 +43,57 @@ public class FightManager : MonoBehaviour
                 Sprite sprite = Resources.Load<Sprite>(Fe.spriteLocation);
                 renderer.sprite = sprite;
                 go.transform.SetParent(contentComponent.transform);
-                go.transform.localScale *= 3;
+                go.transform.localScale /= 25;
                 enemiesObjects.Add(go);
             }
             turnList.Add(Fe);
         }
         turn = 0;
-        playerTurnStarted = false;
+        playerInMenu = false;
         playerTurnEnd = false;
+        StartCoroutine(ManageTurn());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (turn != 0)
+        
+
+    }
+
+    IEnumerator ManageTurn()
+    {
+        while (true)
         {
-            // IA playing
-            if (enemies[turn-1].hp != 0)
+            if (turn != 0)
             {
-                //Debug.Log("Turn: " + turn);
-                Attack(enemies[turn-1]);
-            }
-            turn = (turn + 1) % turnList.Count;
-        }
-        else
-        {
-            // player
-            if (!playerTurnEnd)
-            {
-                if (playerTurnStarted)
-                    return;
-                playerTurnStarted = true;
-                VerticalNavigationMenuBehavior vnmb = FindObjectOfType<VerticalNavigationMenuBehavior>();
-                vnmb.SetActive(true);
+                // IA playing
+                yield return EnemyTurn();
             }
             else
             {
-                playerTurnStarted = false;
-                playerTurnEnd = false;
-                turn = (turn + 1) % turnList.Count;
+                // player
+                yield return PlayerTurn();
             }
+            turn = (turn + 1) % turnList.Count;
         }
+    }
+
+    IEnumerator EnemyTurn()
+    {
+        if (enemies[turn - 1].hp != 0)
+        {
+            //Debug.Log("Turn: " + turn);
+            Attack(enemies[turn - 1]);
+            yield return new WaitForSecondsRealtime(1);
+        }
+    }
+
+    IEnumerator PlayerTurn()
+    {
+        playerInMenu = true;
+        FindObjectOfType<VerticalNavigationMenuBehavior>().SetActive(true);
+        yield return new WaitWhile(() => playerInMenu);
 
     }
 

@@ -58,7 +58,7 @@ public class EnemySelectBehavior : MonoBehaviour
         {
             Debug.Log("Selected: " + selected);
             FindObjectOfType<FightManager>().Attack(FightManager.player, selected);
-            FightManager.playerTurnEnd = true;
+            FightManager.playerInMenu = false;
             SetActive(false);
             //isActive = false;
         }
@@ -68,8 +68,7 @@ public class EnemySelectBehavior : MonoBehaviour
             VerticalNavigationMenuBehavior vnmb = FindObjectOfType<VerticalNavigationMenuBehavior>();
             vnmb.SetActive(true);
         }
-        Vector3 offset = new Vector3( 0, 100, 0 );
-        cursor.transform.position = EnemyListComponent.transform.GetChild(selected).transform.position + offset;
+        cursor.transform.position = EnemyListComponent.transform.GetChild(selected).transform.position;
         enemyNameTxt.text = FightManager.enemies[selected].name;
     }
 
