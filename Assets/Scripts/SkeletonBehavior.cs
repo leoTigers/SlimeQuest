@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class SkeletonBehavior : MonoBehaviour
 {
-    public GameObject sceneToDisable;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +23,7 @@ public class SkeletonBehavior : MonoBehaviour
         Debug.Log("Collided with: " + otherObj);
         if(otherObj.name == "Player")
         {
-            sceneToDisable.SetActive(false);
-            SceneManager.LoadSceneAsync("Fight", LoadSceneMode.Additive);
+            FindObjectOfType<MapSceneManager>().StartFight(this.transform.gameObject);
 
         }
     }

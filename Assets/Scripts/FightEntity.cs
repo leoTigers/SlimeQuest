@@ -33,9 +33,9 @@ public class Entity
     {
         this.name = name;
         this.hpMax = hpMax;
-        this.hp = hpMax;
+        hp = hpMax;
         this.mpMax = mpMax;
-        this.mp = mpMax;
+        mp = mpMax;
         this.physicalAtt = physicalAtt;
         this.physicalDef = physicalDef;
         this.magicalAtt = magicalAtt;

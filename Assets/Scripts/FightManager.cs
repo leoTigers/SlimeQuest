@@ -24,7 +24,7 @@ public class FightManager : MonoBehaviour
         enemies = new List<Entity>();
         enemiesObjects = new List<GameObject>();
         turnList = new List<Entity>();
-        player =    new Entity("Slime",      69, 25, 10, 1000, 10, 10, 10, 10, 1, "");
+        player = MapSceneManager.player;
         enemies.Add(new Entity("Plant",      20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/flower_enemy_v1"));
         enemies.Add(new Entity("Bird",       20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/fire_bird_enemy_v1"));
         enemies.Add(new Entity("Lion",       20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/lion_enemy"));
@@ -85,7 +85,7 @@ public class FightManager : MonoBehaviour
         {
             //Debug.Log("Turn: " + turn);
             Attack(enemies[turn - 1]);
-            yield return new WaitForSecondsRealtime(1);
+            yield return new WaitForSecondsRealtime(0.1f);
         }
     }
 
@@ -101,16 +101,17 @@ public class FightManager : MonoBehaviour
     {
         // player targeted
         Entity target = player;
-        float armorDamageMult = (float)(target.physicalDef < 0 ?
-            2 - 100.0 / (100.0 - target.physicalDef) :
-            100.0 / (100.0 + target.physicalDef));
-        int damage = (int)((float)attacker.physicalAtt * armorDamageMult);
+        float armorDamageMult = target.physicalDef < 0 ?
+            2 - 100.0f / (100.0f - target.physicalDef) :
+            100.0f / (100.0f + target.physicalDef);
+        int damage = (int)(attacker.physicalAtt * armorDamageMult);
         damage = damage==0 ? 1 : damage;
         bool dead = target.TakeDamage(damage);
         if (dead)
         {
             // print fail screen
             Debug.Log("DEAD");
+            SceneManager.LoadSceneAsync("GameOver", LoadSceneMode.Single);
         }
     }
 
@@ -135,6 +136,7 @@ public class FightManager : MonoBehaviour
             {
                 // end fight anim
                 SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
+                FindObjectOfType<MapSceneManager>().SetSceneActive(true);
             }
         }
     }
