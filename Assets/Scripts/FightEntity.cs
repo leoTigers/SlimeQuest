@@ -44,6 +44,7 @@ public class Entity
         this.luck = luck;
         this.level = level;
         this.spriteLocation = spriteLocation;
+        entityStatus = Status.NONE;
     }
 
     public Entity(string name, int hp, int hpMax, int mp, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, Status entityStatus, string spriteLocation)

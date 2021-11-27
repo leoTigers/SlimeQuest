@@ -65,8 +65,7 @@ public class EnemySelectBehavior : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             SetActive(false);
-            VerticalNavigationMenuBehavior vnmb = FindObjectOfType<VerticalNavigationMenuBehavior>();
-            vnmb.SetActive(true);
+            FindObjectOfType<VerticalNavigationMenuBehavior>().SetActive(true);
         }
         cursor.transform.position = EnemyListComponent.transform.GetChild(selected).transform.position;
         enemyNameTxt.text = FightManager.enemies[selected].name;
