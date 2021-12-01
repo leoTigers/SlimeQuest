@@ -27,7 +27,7 @@ public class FightManager : MonoBehaviour
         turnList = new List<Entity>();
         player = MapSceneManager.player;
         if (player == null)
-            player = new Entity("Slime", 100, 20, 10, 10, 10, 10, 10, 10, 1, "");
+            player = new Entity("Slime", 100, 20, 20, 20, 20, 20, 10, 10, 1, "");
         enemies.Add(new Entity("Plant",      20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/flower_enemy_v1"));
         enemies.Add(new Entity("Bird",       20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/fire_bird_enemy_v1"));
         enemies.Add(new Entity("Lion",       20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/lion_enemy"));
@@ -129,6 +129,35 @@ public class FightManager : MonoBehaviour
         if (user.hp > user.hpMax)
             user.hp = user.hpMax;
         user.mp -= 4;
+    }
+
+    public IEnumerator MagicAttack(Entity attacker, int targetId)
+    {
+        yield return MakeAction(attacker, "fireball");
+        Entity target = enemies[targetId];
+        float armorDamageMult = (float)(target.magicalDef < 0 ?
+            2 - 100.0 / (100.0 - target.magicalDef) :
+            100.0 / (100.0 + target.magicalDef));
+        float damage = (attacker.magicalAtt * armorDamageMult);
+        if (target.isDefending)
+            damage /= 2;
+        damage = damage < 1 ? 1 : damage;
+        bool dead = target.TakeDamage((int)damage);
+        if (dead)
+        {
+            enemiesObjects[targetId].GetComponent<Image>().enabled = false;
+
+            int enemiesAlive = 0;
+            foreach (Entity e in enemies)
+                if (e.hp > 0)
+                    enemiesAlive++;
+            if (enemiesAlive == 0)
+            {
+                // end fight anim
+                SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
+                FindObjectOfType<MapSceneManager>().SetSceneActive(true);
+            }
+        }
     }
 
     public IEnumerator Attack(Entity attacker)

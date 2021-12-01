@@ -11,6 +11,7 @@ public class EnemySelectBehavior : MonoBehaviour
     public GameObject cursor;
     public GameObject enemyNameBox;
     public Text enemyNameTxt;
+    public int attackType = 0;
     private int enemyCount;
     private int selected;
     private bool frameLock;
@@ -18,6 +19,7 @@ public class EnemySelectBehavior : MonoBehaviour
     void Start()
     {
         selected = 0;
+        attackType = 0;
     }
 
     // Update is called once per frame
@@ -72,7 +74,10 @@ public class EnemySelectBehavior : MonoBehaviour
     IEnumerator PlayerAttack()
     {
         SetActive(false);
-        yield return FindObjectOfType<FightManager>().Attack(FightManager.player, selected);
+        if(attackType == 0)
+            yield return FindObjectOfType<FightManager>().Attack(FightManager.player, selected);
+        if(attackType == 1)
+            yield return FindObjectOfType<FightManager>().MagicAttack(FightManager.player, selected);
         FightManager.playerInMenu = false;
     }
 

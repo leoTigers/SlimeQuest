@@ -46,11 +46,18 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
             switch (selected)
             {
                 case 0:
-                    EnemySelectBehavior esb = FindObjectOfType<FightManager>().GetComponent<EnemySelectBehavior>();
-                    esb.SetActive(true);
+                    {
+                        EnemySelectBehavior esb = FindObjectOfType<FightManager>().GetComponent<EnemySelectBehavior>();
+                        esb.attackType = 0;
+                        esb.SetActive(true);
+                    }
                     break;
                 case 1:
-                    //                    FindObjectOfType<FightManager>().Magic(FightManager.player, selected);
+                    {
+                        EnemySelectBehavior esb = FindObjectOfType<FightManager>().GetComponent<EnemySelectBehavior>();
+                        esb.attackType = 1;
+                        esb.SetActive(true);
+                    }
                     break;
                 case 2:
                     StartCoroutine(PlayerHeal());
@@ -70,7 +77,7 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
 
     IEnumerator PlayerHeal()
     {
-        if (FightManager.player.mp < 20)
+        if (FightManager.player.mp < 4)
         {
             yield return FindObjectOfType<FightManager>().Warning("Not enough mana !");
             SetActive(true);
