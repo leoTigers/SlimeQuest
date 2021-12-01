@@ -326,6 +326,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contentComponent: {fileID: 1544604383}
+  actionBox: {fileID: 850962796}
+  actionText: {fileID: 1053763997}
 --- !u!4 &180052787
 Transform:
   m_ObjectHideFlags: 0
@@ -1121,7 +1123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &850962797
 RectTransform:
   m_ObjectHideFlags: 0

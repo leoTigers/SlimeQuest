@@ -88,8 +88,8 @@ public class FightManager : MonoBehaviour
         {
             //Debug.Log("Turn: " + turn);
             enemies[turn - 1].isDefending = false;
+            yield return MakeAction(enemies[turn - 1], "slash");  
             Attack(enemies[turn - 1]);
-            yield return MakeAttack(enemies[turn - 1], "slash");  //return new WaitForSecondsRealtime(0.1f);
         }
     }
 
@@ -102,12 +102,18 @@ public class FightManager : MonoBehaviour
 
     }
 
-    IEnumerator MakeAttack(Entity attacker, string spellName)
+    IEnumerator MakeAction(Entity attacker, string spellName)
     {
         actionText.text = attacker.name + " uses " + spellName;
         actionBox.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
         actionBox.SetActive(false);
+    }
+
+    public IEnumerator Heal(Entity user)
+    {
+        yield return MakeAction(user, "heal");
+        user.hp += user.magicalAtt*2;
     }
 
     private void Attack(Entity attacker)

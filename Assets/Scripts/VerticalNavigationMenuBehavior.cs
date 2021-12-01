@@ -20,6 +20,7 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
         for(int i = 0; i < childCount; i++) 
             childrens.Add(transform.GetChild(i).gameObject);
         childrens[selected].GetComponent<SelectableBehavior>().isSelected = true;
+       // StartCoroutine(PlayerMenu());
     }
 
     // Update is called once per frame
@@ -27,12 +28,13 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
     {
         if (!isActive)
             return;
+        //yield return new WaitForSecondsRealtime(0.06f);
         childrens[selected].GetComponent<SelectableBehavior>().isSelected = false;
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             selected -= 1;
             if (selected == -1)
-                selected = childCount-1;
+                selected = childCount - 1;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -45,13 +47,13 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
             {
                 case 0:
                     EnemySelectBehavior esb = FindObjectOfType<FightManager>().GetComponent<EnemySelectBehavior>();
-                    esb.SetActive(true); 
+                    esb.SetActive(true);
                     break;
                 case 1:
                     //                    FindObjectOfType<FightManager>().Magic(FightManager.player, selected);
                     break;
                 case 2:
-                    //                    FindObjectOfType<FightManager>().Heal();
+                    StartCoroutine(PlayerHeal());
                     break;
                 case 3:
                     FindObjectOfType<FightManager>().Defend();
@@ -64,6 +66,13 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
         }
 
         childrens[selected].GetComponent<SelectableBehavior>().isSelected = true;
+    }
+
+    IEnumerator PlayerHeal()
+    {
+        yield return FindObjectOfType<FightManager>().Heal(FightManager.player);
+        FightManager.playerInMenu = false;
+
     }
 
     public void SetActive(bool active)
