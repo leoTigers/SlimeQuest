@@ -75,8 +75,11 @@ public class EnemySelectBehavior : MonoBehaviour
     {
         SetActive(false);
         if(attackType == 0)
+        {
             yield return FindObjectOfType<FightManager>().Attack(FightManager.player, selected);
-        if(attackType == 1)
+            FightManager.playerInMenu = false;
+        }
+        if (attackType == 1)
         {
             if (FightManager.player.mp < 5)
             {
