@@ -30,11 +30,15 @@ public class FightPlayerStatsManager : MonoBehaviour
             playerHPTxt.color = Color.red;
         else if (((float)player.hp / player.hpMax) <= 0.25)
             playerHPTxt.color = Color.yellow;
+        else
+            playerHPTxt.color = Color.white;
         playerMPTxt.text = "MP: " + player.mp.ToString() + "/" + player.mpMax.ToString();
         if (((float)player.mp / player.mpMax) <= 0.1)
             playerMPTxt.color = Color.red;
         else if (((float)player.mp / player.mpMax) <= 0.25)
             playerMPTxt.color = Color.yellow;
+        else
+            playerHPTxt.color = Color.white;
 
         string statusText = "";
         switch(player.entityStatus)

@@ -18,6 +18,7 @@ public class FightManager : MonoBehaviour
     public Text actionText;
     public GameObject playerHitAnimation;
     public GameObject playerHealAnimation;
+    public GameObject fireballAnimation;
 
     private List<Entity> turnList;
     private int turn;
@@ -138,8 +139,12 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator MagicAttack(Entity attacker, int targetId)
     {
-        yield return MakeAction(attacker, "fireball");
         Entity target = enemies[targetId];
+        fireballAnimation.transform.position = enemiesObjects[targetId].transform.position;
+        fireballAnimation.SetActive(true);
+        yield return MakeAction(attacker, "fireball", 3);
+        fireballAnimation.SetActive(false);
+        yield return new WaitForSecondsRealtime(0.2f);
         float armorDamageMult = (float)(target.magicalDef < 0 ?
             2 - 100.0 / (100.0 - target.magicalDef) :
             100.0 / (100.0 + target.magicalDef));
