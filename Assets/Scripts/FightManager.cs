@@ -31,12 +31,32 @@ public class FightManager : MonoBehaviour
         player = MapSceneManager.player;
         if (player == null)
             player = new Entity("Slime", 100, 20, 20, 20, 20, 20, 10, 10, 1, "");
-        enemies.Add(new Entity("Plant",      20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/flower_enemy_v1"));
-        enemies.Add(new Entity("Bird",       20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/fire_bird_enemy_v1"));
-        enemies.Add(new Entity("Lion",       20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/lion_enemy"));
-        enemies.Add(new Entity("Meduse",     20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/meduse_enemy"));
-        enemies.Add(new Entity("Siren",      20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/siren_enemy"));
-        enemies.Add(new Entity("I AM GROOT", 20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/treant_enemy_v1"));
+
+        int enemyCount = Random.Range(1, 4);
+        for(int i = 0; i < enemyCount; i++)
+        {
+            switch(Random.Range(0, 6))
+            {
+                case 0:
+                    enemies.Add(new Entity("Plant", 20, 10, 5, 5, 5, 5, 10, 10, 1, "Sprites/flower_enemy_v1"));
+                    break;
+                case 1:
+                    enemies.Add(new Entity("Bird", 20, 10, 5, 5, 5, 5, 10, 10, 1, "Sprites/fire_bird_enemy_v1"));
+                    break;
+                case 2:
+                    enemies.Add(new Entity("Lion", 20, 10, 7, 7, 5, 5, 10, 10, 1, "Sprites/lion_enemy"));
+                    break;
+                case 3:
+                    enemies.Add(new Entity("Meduse", 20, 10, 5, 5, 10, 10, 10, 10, 1, "Sprites/meduse_enemy"));
+                    break;
+                case 4:
+                    enemies.Add(new Entity("Siren", 40, 10, 3, 10, 10, 10, 10, 10, 1, "Sprites/siren_enemy"));
+                    break;
+                case 5:
+                    enemies.Add(new Entity("I AM GROOT", 20, 10, 2, 2, 10, 10, 10, 10, 1, "Sprites/treant_enemy_v1"));
+                    break;
+            }
+        }
 
         turnList.Add(player);
         foreach (Entity Fe in enemies)
@@ -139,6 +159,7 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator MagicAttack(Entity attacker, int targetId)
     {
+        attacker.mp -= 5;
         Entity target = enemies[targetId];
         fireballAnimation.transform.position = enemiesObjects[targetId].transform.position;
         fireballAnimation.SetActive(true);

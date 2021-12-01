@@ -77,8 +77,18 @@ public class EnemySelectBehavior : MonoBehaviour
         if(attackType == 0)
             yield return FindObjectOfType<FightManager>().Attack(FightManager.player, selected);
         if(attackType == 1)
-            yield return FindObjectOfType<FightManager>().MagicAttack(FightManager.player, selected);
-        FightManager.playerInMenu = false;
+        {
+            if (FightManager.player.mp < 5)
+            {
+                yield return FindObjectOfType<FightManager>().Warning("Not enough mana !");
+                SetActive(true);
+            }
+            else
+            {
+                yield return FindObjectOfType<FightManager>().MagicAttack(FightManager.player, selected);
+                FightManager.playerInMenu = false;
+            }
+        }
     }
 
     public void SetActive(bool active)
