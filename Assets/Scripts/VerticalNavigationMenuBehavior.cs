@@ -70,9 +70,16 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
 
     IEnumerator PlayerHeal()
     {
-        yield return FindObjectOfType<FightManager>().Heal(FightManager.player);
-        FightManager.playerInMenu = false;
-
+        if (FightManager.player.mp < 20)
+        {
+            yield return FindObjectOfType<FightManager>().Warning("Not enough mana !");
+            SetActive(true);
+        }
+        else
+        {
+            yield return FindObjectOfType<FightManager>().Heal(FightManager.player);
+            FightManager.playerInMenu = false;
+        }
     }
 
     public void SetActive(bool active)

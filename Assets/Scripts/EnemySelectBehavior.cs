@@ -58,10 +58,7 @@ public class EnemySelectBehavior : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Return))
         {
             Debug.Log("Selected: " + selected);
-            FindObjectOfType<FightManager>().Attack(FightManager.player, selected);
-            FightManager.playerInMenu = false;
-            SetActive(false);
-            //isActive = false;
+            StartCoroutine(PlayerAttack());
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -70,6 +67,13 @@ public class EnemySelectBehavior : MonoBehaviour
         }
         cursor.transform.position = EnemyListComponent.transform.GetChild(selected).transform.position;
         enemyNameTxt.text = FightManager.enemies[selected].name;
+    }
+
+    IEnumerator PlayerAttack()
+    {
+        SetActive(false);
+        yield return FindObjectOfType<FightManager>().Attack(FightManager.player, selected);
+        FightManager.playerInMenu = false;
     }
 
     public void SetActive(bool active)

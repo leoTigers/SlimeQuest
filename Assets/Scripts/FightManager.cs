@@ -88,8 +88,7 @@ public class FightManager : MonoBehaviour
         {
             //Debug.Log("Turn: " + turn);
             enemies[turn - 1].isDefending = false;
-            yield return MakeAction(enemies[turn - 1], "slash");  
-            Attack(enemies[turn - 1]);
+            yield return Attack(enemies[turn - 1]);
         }
     }
 
@@ -102,22 +101,39 @@ public class FightManager : MonoBehaviour
 
     }
 
-    IEnumerator MakeAction(Entity attacker, string spellName)
+    public IEnumerator Warning(string warning)
     {
-        actionText.text = attacker.name + " uses " + spellName;
+        actionText.text = warning;
         actionBox.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
         actionBox.SetActive(false);
+    }
+
+    IEnumerator MakeAction(Entity attacker, string spellName, float waitTime)
+    {
+        actionText.text = attacker.name + " uses " + spellName;
+        actionBox.SetActive(true);
+        yield return new WaitForSecondsRealtime(waitTime);
+        actionBox.SetActive(false);
+    }
+
+    IEnumerator MakeAction(Entity attacker, string spellName)
+    {
+        yield return MakeAction(attacker, spellName, 0.5f);
     }
 
     public IEnumerator Heal(Entity user)
     {
         yield return MakeAction(user, "heal");
         user.hp += user.magicalAtt*2;
+        if (user.hp > user.hpMax)
+            user.hp = user.hpMax;
+        user.mp -= 4;
     }
 
-    private void Attack(Entity attacker)
+    public IEnumerator Attack(Entity attacker)
     {
+        yield return MakeAction(attacker, "slash");
         // player targeted
         Entity target = player;
         float armorDamageMult = target.physicalDef < 0 ?
@@ -136,8 +152,9 @@ public class FightManager : MonoBehaviour
         }
     }
 
-    public void Attack(Entity attacker, int targetId)
+    public IEnumerator Attack(Entity attacker, int targetId)
     {
+        yield return MakeAction(attacker, "slash");
         Entity target = enemies[targetId];
         float armorDamageMult = (float)(target.physicalDef < 0 ?
             2 - 100.0 / (100.0 - target.physicalDef):
