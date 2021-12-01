@@ -17,6 +17,7 @@ public class FightManager : MonoBehaviour
     public GameObject actionBox;
     public Text actionText;
     public GameObject playerHitAnimation;
+    public GameObject playerHealAnimation;
 
     private List<Entity> turnList;
     private int turn;
@@ -125,7 +126,10 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator Heal(Entity user)
     {
-        yield return MakeAction(user, "heal");
+        playerHealAnimation.SetActive(true);
+        yield return MakeAction(user, "heal", 3);
+        playerHealAnimation.SetActive(false);
+        yield return new WaitForSecondsRealtime(0.2f);
         user.hp += user.magicalAtt*2;
         if (user.hp > user.hpMax)
             user.hp = user.hpMax;
