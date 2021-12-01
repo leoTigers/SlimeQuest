@@ -47,6 +47,16 @@ public class VerticalNavigationMenuBehavior : MonoBehaviour
                     EnemySelectBehavior esb = FindObjectOfType<FightManager>().GetComponent<EnemySelectBehavior>();
                     esb.SetActive(true); 
                     break;
+                case 1:
+                    //                    FindObjectOfType<FightManager>().Magic(FightManager.player, selected);
+                    break;
+                case 2:
+                    //                    FindObjectOfType<FightManager>().Heal();
+                    break;
+                case 3:
+                    FindObjectOfType<FightManager>().Defend();
+                    FightManager.playerInMenu = false;
+                    break;
                 default:
                     SetActive(true);
                     break;

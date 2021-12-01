@@ -28,6 +28,7 @@ public class Entity
     public Status entityStatus;
     // Sprite location
     public string spriteLocation;
+    public bool isDefending;
 
     public Entity(string name, int hpMax, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, int level, string spriteLocation)
     {
@@ -45,6 +46,7 @@ public class Entity
         this.level = level;
         this.spriteLocation = spriteLocation;
         entityStatus = Status.NONE;
+        isDefending = false;
     }
 
     public Entity(string name, int hp, int hpMax, int mp, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, Status entityStatus, string spriteLocation)
@@ -62,6 +64,7 @@ public class Entity
         this.luck = luck;
         this.entityStatus = entityStatus;
         this.spriteLocation = spriteLocation;
+        isDefending = false;
     }
 
     /**

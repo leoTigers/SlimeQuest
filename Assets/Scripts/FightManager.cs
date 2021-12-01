@@ -9,12 +9,13 @@ using System.IO;
 
 public class FightManager : MonoBehaviour
 {
-
     // Start is called before the first frame update
     static public List<Entity> enemies;
     static public List<GameObject> enemiesObjects;
     static public Entity player;
     public GameObject contentComponent;
+    public GameObject actionBox;
+    public Text actionText;
 
     private List<Entity> turnList;
     private int turn;
@@ -25,6 +26,8 @@ public class FightManager : MonoBehaviour
         enemiesObjects = new List<GameObject>();
         turnList = new List<Entity>();
         player = MapSceneManager.player;
+        if (player == null)
+            player = new Entity("Slime", 100, 20, 10, 10, 10, 10, 10, 10, 1, "");
         enemies.Add(new Entity("Plant",      20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/flower_enemy_v1"));
         enemies.Add(new Entity("Bird",       20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/fire_bird_enemy_v1"));
         enemies.Add(new Entity("Lion",       20, 10, 10, 10, 10, 10, 10, 10, 1, "Sprites/lion_enemy"));
@@ -84,17 +87,27 @@ public class FightManager : MonoBehaviour
         if (enemies[turn - 1].hp != 0)
         {
             //Debug.Log("Turn: " + turn);
+            enemies[turn - 1].isDefending = false;
             Attack(enemies[turn - 1]);
-            yield return new WaitForSecondsRealtime(0.1f);
+            yield return MakeAttack(enemies[turn - 1], "slash");  //return new WaitForSecondsRealtime(0.1f);
         }
     }
 
     IEnumerator PlayerTurn()
     {
+        player.isDefending = false;
         playerInMenu = true;
         FindObjectOfType<VerticalNavigationMenuBehavior>().SetActive(true);
         yield return new WaitWhile(() => playerInMenu);
 
+    }
+
+    IEnumerator MakeAttack(Entity attacker, string spellName)
+    {
+        actionText.text = attacker.name + " uses " + spellName;
+        actionBox.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        actionBox.SetActive(false);
     }
 
     private void Attack(Entity attacker)
@@ -104,9 +117,11 @@ public class FightManager : MonoBehaviour
         float armorDamageMult = target.physicalDef < 0 ?
             2 - 100.0f / (100.0f - target.physicalDef) :
             100.0f / (100.0f + target.physicalDef);
-        int damage = (int)(attacker.physicalAtt * armorDamageMult);
-        damage = damage==0 ? 1 : damage;
-        bool dead = target.TakeDamage(damage);
+        float damage = (attacker.physicalAtt * armorDamageMult);
+        if (target.isDefending)
+            damage /= 2;
+        damage = damage<1 ? 1 : damage;
+        bool dead = target.TakeDamage((int)damage);
         if (dead)
         {
             // print fail screen
@@ -121,9 +136,11 @@ public class FightManager : MonoBehaviour
         float armorDamageMult = (float)(target.physicalDef < 0 ?
             2 - 100.0 / (100.0 - target.physicalDef):
             100.0 / (100.0 + target.physicalDef));
-        int damage = (int)((float)attacker.physicalAtt * armorDamageMult);
-        damage = damage == 0 ? 1 : damage;
-        bool dead = target.TakeDamage(damage);
+        float damage = (attacker.physicalAtt * armorDamageMult);
+        if (target.isDefending)
+            damage /= 2;
+        damage = damage < 1 ? 1 : damage;
+        bool dead = target.TakeDamage((int)damage);
         if (dead)
         {
             enemiesObjects[targetId].GetComponent<Image>().enabled = false;
@@ -140,4 +157,10 @@ public class FightManager : MonoBehaviour
             }
         }
     }
+
+    public void Defend()
+    {
+        player.isDefending = true;
+    }
+
 }
