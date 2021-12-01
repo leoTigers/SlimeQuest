@@ -19,6 +19,7 @@ public class FightManager : MonoBehaviour
     public GameObject playerHitAnimation;
     public GameObject playerHealAnimation;
     public GameObject fireballAnimation;
+    public GameObject slashAnimation;
 
     private List<Entity> turnList;
     private int turn;
@@ -216,8 +217,12 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator Attack(Entity attacker, int targetId)
     {
-        yield return MakeAction(attacker, "slash");
         Entity target = enemies[targetId];
+        slashAnimation.transform.position = enemiesObjects[targetId].transform.position;
+        slashAnimation.SetActive(true);
+        yield return MakeAction(attacker, "slash", 1);
+        slashAnimation.SetActive(false);
+        yield return new WaitForSecondsRealtime(0.2f);
         float armorDamageMult = (float)(target.physicalDef < 0 ?
             2 - 100.0 / (100.0 - target.physicalDef):
             100.0 / (100.0 + target.physicalDef));
