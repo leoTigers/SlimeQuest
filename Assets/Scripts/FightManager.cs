@@ -16,6 +16,7 @@ public class FightManager : MonoBehaviour
     public GameObject contentComponent;
     public GameObject actionBox;
     public Text actionText;
+    public GameObject playerHitAnimation;
 
     private List<Entity> turnList;
     private int turn;
@@ -162,7 +163,9 @@ public class FightManager : MonoBehaviour
 
     public IEnumerator Attack(Entity attacker)
     {
+        playerHitAnimation.SetActive(true);
         yield return MakeAction(attacker, "slash");
+        playerHitAnimation.SetActive(false);
         // player targeted
         Entity target = player;
         float armorDamageMult = target.physicalDef < 0 ?
