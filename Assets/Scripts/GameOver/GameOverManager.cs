@@ -16,7 +16,7 @@ public class GameOverManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadSceneAsync("SampleScene", LoadSceneMode.Single);
+            SceneManager.LoadSceneAsync("Menu", LoadSceneMode.Single);
         }
     }
 }
