@@ -10,7 +10,7 @@ public class SceneLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(playerPrefab, SceneLoaderScript.playerSave.GetPosition(),
+        Instantiate(playerPrefab, SceneLoaderScript.playerSave.Position,
             Quaternion.identity);
     }
 

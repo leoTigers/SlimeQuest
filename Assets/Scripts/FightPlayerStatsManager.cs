@@ -23,9 +23,9 @@ public class FightPlayerStatsManager : MonoBehaviour
     void Update()
     {
         player = FightManager.player;
-        playerNameTxt.text = player.name;
+        playerNameTxt.text = player.Name;
 
-        playerHPTxt.text = "HP: " + player.hp.ToString() + "/" + player.hpMax.ToString();
+        playerHPTxt.text = $"HP: {player.Statistics["Hp"]} / {player.Statistics["HpMax"]}";
         if (((float)player.hp / player.hpMax) <= 0.1)
             playerHPTxt.color = Color.red;
         else if (((float)player.hp / player.hpMax) <= 0.25)

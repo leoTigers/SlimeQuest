@@ -31,7 +31,7 @@ public class FightManager : MonoBehaviour
         turnList = new List<Entity>();
         player = MapSceneManager.player;
         if (player == null)
-            player = new Entity("Slime", 100, 20, 20, 20, 20, 20, 10, 10, 1, "");
+            player = new Entity("Slime", new Dictionary<string, int> { ["HpMax"] = 69, ["MpMax"] = 25, ["PhysicalAttack"] = 15, ["PhysicalDefense"] = 1000, ["MagicalAttack"] = 10, ["MagicalDefense"] = 10 });
 
         int enemyCount = Random.Range(1, 4);
         for(int i = 0; i < enemyCount; i++)
@@ -39,22 +39,22 @@ public class FightManager : MonoBehaviour
             switch(Random.Range(0, 6))
             {
                 case 0:
-                    enemies.Add(new Entity("Plant", 20, 10, 5, 5, 5, 5, 10, 10, 1, "Sprites/flower_enemy_v1"));
+                    enemies.Add(new Entity("Flower", new Dictionary<string, int> { ["HpMax"] = 20, ["MpMax"] = 10, ["PhysicalAttack"] = 5, ["PhysicalDefense"] = 5, ["MagicalAttack"] = 5, ["MagicalDefense"] = 5 }, "Sprites/flower_enemy_v1")); 
                     break;
                 case 1:
-                    enemies.Add(new Entity("Bird", 20, 10, 5, 5, 5, 5, 10, 10, 1, "Sprites/fire_bird_enemy_v1"));
+                    enemies.Add(new Entity("Bird", new Dictionary<string, int> { ["HpMax"] = 20, ["MpMax"] = 10, ["PhysicalAttack"] = 5, ["PhysicalDefense"] = 5, ["MagicalAttack"] = 5, ["MagicalDefense"] = 5 }, "Sprites/fire_bird_enemy_v1"));
                     break;
                 case 2:
-                    enemies.Add(new Entity("Lion", 20, 10, 7, 7, 5, 5, 10, 10, 1, "Sprites/lion_enemy"));
+                    enemies.Add(new Entity("Lion", new Dictionary<string, int> { ["HpMax"] = 20, ["MpMax"] = 10, ["PhysicalAttack"] = 7, ["PhysicalDefense"] = 7, ["MagicalAttack"] = 5, ["MagicalDefense"] = 5 }, "Sprites/lion_enemy"));
                     break;
                 case 3:
-                    enemies.Add(new Entity("Meduse", 20, 10, 5, 5, 10, 10, 10, 10, 1, "Sprites/meduse_enemy"));
+                    enemies.Add(new Entity("Meduse", new Dictionary<string, int> { ["HpMax"] = 20, ["MpMax"] = 10, ["PhysicalAttack"] = 5, ["PhysicalDefense"] = 5, ["MagicalAttack"] = 5, ["MagicalDefense"] = 5 }, "Sprites/meduse_enemy"));
                     break;
                 case 4:
-                    enemies.Add(new Entity("Siren", 40, 10, 3, 10, 10, 10, 10, 10, 1, "Sprites/siren_enemy"));
+                    enemies.Add(new Entity("Siren", new Dictionary<string, int> { ["HpMax"] = 30, ["MpMax"] = 10, ["PhysicalAttack"] = 3, ["PhysicalDefense"] = 10, ["MagicalAttack"] = 10, ["MagicalDefense"] = 10 }, "Sprites/siren_enemy"));
                     break;
                 case 5:
-                    enemies.Add(new Entity("I AM GROOT", 20, 10, 2, 2, 10, 10, 10, 10, 1, "Sprites/treant_enemy_v1"));
+                    enemies.Add(new Entity("I AM GROOT", new Dictionary<string, int> { ["HpMax"] = 20, ["MpMax"] = 10, ["PhysicalAttack"] = 2, ["PhysicalDefense"] = 2, ["MagicalAttack"] = 10, ["MagicalDefense"] = 10 }, "Sprites/treant_enemy_v1"));
                     break;
             }
         }
@@ -64,7 +64,7 @@ public class FightManager : MonoBehaviour
         {
             if (Fe.spriteLocation != null)
             {
-                GameObject go = new GameObject(Fe.name);
+                GameObject go = new GameObject(Fe.Name);
 
                 Image renderer = go.AddComponent<Image>();
                 Sprite sprite = Resources.Load<Sprite>(Fe.spriteLocation);
@@ -108,17 +108,17 @@ public class FightManager : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        if (enemies[turn - 1].hp != 0)
+        if (enemies[turn - 1].Statistics["Hp"] != 0)
         {
             //Debug.Log("Turn: " + turn);
-            enemies[turn - 1].isDefending = false;
+            enemies[turn - 1].IsDefending = false;
             yield return Attack(enemies[turn - 1]);
         }
     }
 
     IEnumerator PlayerTurn()
     {
-        player.isDefending = false;
+        player.IsDefending = false;
         playerInMenu = true;
         FindObjectOfType<VerticalNavigationMenuBehavior>().SetActive(true);
         yield return new WaitWhile(() => playerInMenu);
@@ -135,7 +135,7 @@ public class FightManager : MonoBehaviour
 
     IEnumerator MakeAction(Entity attacker, string spellName, float waitTime)
     {
-        actionText.text = attacker.name + " uses " + spellName;
+        actionText.text =  $"{attacker.Name} uses  {spellName}";
         actionBox.SetActive(true);
         yield return new WaitForSecondsRealtime(waitTime);
         actionBox.SetActive(false);
@@ -152,26 +152,26 @@ public class FightManager : MonoBehaviour
         yield return MakeAction(user, "heal", 3);
         playerHealAnimation.SetActive(false);
         yield return new WaitForSecondsRealtime(0.2f);
-        user.hp += user.magicalAtt*2;
-        if (user.hp > user.hpMax)
-            user.hp = user.hpMax;
-        user.mp -= 4;
+        user.Statistics["Hp"] += user.Statistics["MagicalAttack"]*2;
+        if (user.Statistics["Hp"] > user.Statistics["HpMax"])
+            user.Statistics["Hp"] = user.Statistics["HpMax"];
+        user.Statistics["Mp"] -= 4;
     }
 
     public IEnumerator MagicAttack(Entity attacker, int targetId)
     {
-        attacker.mp -= 5;
+        attacker.Statistics["Mp"] -= 5;
         Entity target = enemies[targetId];
         fireballAnimation.transform.position = enemiesObjects[targetId].transform.position;
         fireballAnimation.SetActive(true);
         yield return MakeAction(attacker, "fireball", 3);
         fireballAnimation.SetActive(false);
         yield return new WaitForSecondsRealtime(0.2f);
-        float armorDamageMult = (float)(target.magicalDef < 0 ?
-            2 - 100.0 / (100.0 - target.magicalDef) :
-            100.0 / (100.0 + target.magicalDef));
-        float damage = (attacker.magicalAtt * armorDamageMult);
-        if (target.isDefending)
+        float armorDamageMult = (float)(target.Statistics["MagicalDefense"] < 0 ?
+            2 - 100.0 / (100.0 - target.Statistics["MagicalDefense"]) :
+            100.0 / (100.0 + target.Statistics["MagicalDefense"]));
+        float damage = (attacker.Statistics["MagicalAttack"] * armorDamageMult);
+        if (target.IsDefending)
             damage /= 2;
         damage = damage < 1 ? 1 : damage;
         bool dead = target.TakeDamage((int)damage);
@@ -181,7 +181,7 @@ public class FightManager : MonoBehaviour
 
             int enemiesAlive = 0;
             foreach (Entity e in enemies)
-                if (e.hp > 0)
+                if (e.Statistics["Hp"] > 0)
                     enemiesAlive++;
             if (enemiesAlive == 0)
             {
@@ -199,11 +199,11 @@ public class FightManager : MonoBehaviour
         playerHitAnimation.SetActive(false);
         // player targeted
         Entity target = player;
-        float armorDamageMult = target.physicalDef < 0 ?
-            2 - 100.0f / (100.0f - target.physicalDef) :
-            100.0f / (100.0f + target.physicalDef);
-        float damage = (attacker.physicalAtt * armorDamageMult);
-        if (target.isDefending)
+        float armorDamageMult = target.Statistics["PhysicalDefense"] < 0 ?
+            2 - 100.0f / (100.0f - target.Statistics["PhysicalDefense"]) :
+            100.0f / (100.0f + target.Statistics["PhysicalDefense"]);
+        float damage = (attacker.Statistics["PhysicalAttack"] * armorDamageMult);
+        if (target.IsDefending)
             damage /= 2;
         damage = damage<1 ? 1 : damage;
         bool dead = target.TakeDamage((int)damage);
@@ -223,11 +223,11 @@ public class FightManager : MonoBehaviour
         yield return MakeAction(attacker, "slash", 1);
         slashAnimation.SetActive(false);
         yield return new WaitForSecondsRealtime(0.2f);
-        float armorDamageMult = (float)(target.physicalDef < 0 ?
-            2 - 100.0 / (100.0 - target.physicalDef):
-            100.0 / (100.0 + target.physicalDef));
-        float damage = (attacker.physicalAtt * armorDamageMult);
-        if (target.isDefending)
+        float armorDamageMult = (float)(target.Statistics["PhysicalDefense"] < 0 ?
+            2 - 100.0 / (100.0 - target.Statistics["PhysicalDefense"]) :
+            100.0 / (100.0 + target.Statistics["PhysicalDefense"]));
+        float damage = (attacker.Statistics["PhysicalAttack"] * armorDamageMult);
+        if (target.IsDefending)
             damage /= 2;
         damage = damage < 1 ? 1 : damage;
         bool dead = target.TakeDamage((int)damage);
@@ -237,7 +237,7 @@ public class FightManager : MonoBehaviour
 
             int enemiesAlive = 0;
             foreach (Entity e in enemies)
-                if (e.hp > 0)
+                if (e.Statistics["Hp"] > 0)
                     enemiesAlive++;
             if (enemiesAlive == 0)
             {
@@ -250,7 +250,7 @@ public class FightManager : MonoBehaviour
 
     public void Defend()
     {
-        player.isDefending = true;
+        player.IsDefending = true;
     }
 
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using System.IO;
+using System.Text.Json;
 
 public enum Status
 {
@@ -15,72 +17,84 @@ public enum Status
     DEAD
 }
 
-public class Entity
+public interface IHittable
 {
-    public string name;
-    public int hp, hpMax;
-    public int mp, mpMax;
-
-    public int physicalAtt, physicalDef;
-    public int magicalAtt, magicalDef;
-    public int speed, luck;
-    public int level, xp, xpToNextLevel;
-    public Status entityStatus;
-    // Sprite location
-    public string spriteLocation;
-    public bool isDefending;
-
-    public Entity(string name, int hpMax, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, int level, string spriteLocation)
-    {
-        this.name = name;
-        this.hpMax = hpMax;
-        hp = hpMax;
-        this.mpMax = mpMax;
-        mp = mpMax;
-        this.physicalAtt = physicalAtt;
-        this.physicalDef = physicalDef;
-        this.magicalAtt = magicalAtt;
-        this.magicalDef = magicalDef;
-        this.speed = speed;
-        this.luck = luck;
-        this.level = level;
-        this.spriteLocation = spriteLocation;
-        entityStatus = Status.NONE;
-        isDefending = false;
-    }
-
-    public Entity(string name, int hp, int hpMax, int mp, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, Status entityStatus, string spriteLocation)
-    {
-        this.name = name;
-        this.hp = hp;
-        this.hpMax = hpMax;
-        this.mp = mp;
-        this.mpMax = mpMax;
-        this.physicalAtt = physicalAtt;
-        this.physicalDef = physicalDef;
-        this.magicalAtt = magicalAtt;
-        this.magicalDef = magicalDef;
-        this.speed = speed;
-        this.luck = luck;
-        this.entityStatus = entityStatus;
-        this.spriteLocation = spriteLocation;
-        isDefending = false;
-    }
-
     /**
      * Reduce hp by the amount
      * Return true if this result in a death, false otherwise
      * */
-    public bool TakeDamage(int amount)
+    public bool TakeDamage(int damage);
+    public bool IsDefending { get; set; }
+}
+
+public interface ILevelable
+{
+    public int Xp { get; set; }
+    public int Level { get; set; }
+}
+
+public class Entity: IHittable, ILevelable
+{
+    public Entity(string name, Dictionary<string, int> statistics, string spriteLocation="")
     {
-        hp -= amount;
-        if (hp < 0)
+        this.spriteLocation = spriteLocation;
+        Name = name;
+        EntityStatus = Status.NONE;
+        Statistics = new Dictionary<string, int>();
+        foreach (string key in statistics.Keys)
         {
-            hp = 0;
-            entityStatus = Status.DEAD;
+            Statistics[key] = statistics[key];
+            if (key == "HpMax")
+                Statistics["Hp"] = statistics[key];
+            if (key == "MpMax")
+                Statistics["Mp"] = statistics[key];
+        }
+            
+        Xp = 0;
+        Level = 1;
+        IsDefending = false;
+    }
+
+    // Sprite location
+    public string spriteLocation { get; set; }
+    public Status EntityStatus { get; set; }
+    public string Name { get ; set ; }
+    public Dictionary<string, int> Statistics { get; set; }
+    public int Xp { get ; set ; }
+    public int Level { get ; set ; }
+    public bool IsDefending { get ; set ; }
+
+    public bool TakeDamage(int damage)
+    {
+        int Hp = Statistics["Hp"];
+        Hp -= damage;
+        if (Hp < 0)
+        {
+            Statistics["Hp"] = 0;
+            EntityStatus = Status.DEAD;
             return true;
         }
+        Statistics["Hp"] = Hp;
         return false;
+    }
+
+    static public void Save(Entity e, string filename="save.json")
+    {
+        string jsonString = JsonSerializer.Serialize(e);
+        File.WriteAllText(filename, jsonString);
+    }
+
+    public int Get(string statisticsName)
+    {
+        if (Statistics.TryGetValue(statisticsName, out int value))
+            return value;
+        else
+            return 0;
+    }
+
+    public void Set(string statisticsName, int value)
+    {
+        Statistics[statisticsName] = value;
     }
 }
 

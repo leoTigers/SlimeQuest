@@ -8,14 +8,16 @@ using UnityEngine;
 
 public class Save
 {
-    Vector3 position;
-    string currentMap;
+    public Vector3 Position { get; set; }
+    public string CurrentMap { get; set; }
 
     public Save Load()
     {
-        Save s = new Save();
-        s.position = new Vector3(-4, 2.5f, -1);
-        s.currentMap = "Start";
+        Save s = new()
+        {
+            Position = new Vector3(-4, 2.5f, -1),
+            CurrentMap = "Start"
+        };
         return s;
     }
 
@@ -23,15 +25,4 @@ public class Save
     {
 
     }
-
-    public Vector3 GetPosition()
-    {
-        return position;
-    }
-
-    public string GetCurrentMap()
-    {
-        return currentMap;
-    }
-
 }

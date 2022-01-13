@@ -11,7 +11,7 @@ public class MapSceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = new Entity("Slime", 69, 25, 15, 1000, 10, 10, 10, 10, 1, "");
+        player = new Entity("Slime", new Dictionary<string, int>{ ["Hp"] = 69, ["Mp"]=25, ["PhysicalAttack"]=15, ["PhysicalDefense"]=1000, ["MagicalAttack"]=10, ["MagicalDefense"]=10});
         isActive = true;
     }
 

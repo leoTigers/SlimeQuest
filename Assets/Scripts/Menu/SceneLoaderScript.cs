@@ -9,7 +9,7 @@ public class SceneLoaderScript : MonoBehaviour
     public void Play()
     {
         playerSave = new Save().Load();
-        SceneManager.LoadSceneAsync(playerSave.GetCurrentMap());
+        SceneManager.LoadSceneAsync(playerSave.CurrentMap);
     }
 
     public void Exit()
