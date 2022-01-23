@@ -6,8 +6,8 @@ public class OptionsManager : MonoBehaviour
 {
     // Start is called before the first frame update
     
-    static public void saveGame()
+    static public void SaveGame()
     {
-        SceneLoaderScript.playerSave.SaveState();
+        SceneLoaderScript.playerSave.SaveState("s1.xml");
     }
 }

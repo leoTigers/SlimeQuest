@@ -23,25 +23,25 @@ public class FightPlayerStatsManager : MonoBehaviour
     void Update()
     {
         player = FightManager.player;
-        playerNameTxt.text = player.name;
+        playerNameTxt.text = player.Name;
 
-        playerHPTxt.text = "HP: " + player.hp.ToString() + "/" + player.hpMax.ToString();
-        if (((float)player.hp / player.hpMax) <= 0.1)
+        playerHPTxt.text = $"HP: {player.Hp} / {player.HpMax}";
+        if (((float)player.Hp / player.HpMax) <= 0.1)
             playerHPTxt.color = Color.red;
-        else if (((float)player.hp / player.hpMax) <= 0.25)
+        else if (((float)player.Hp / player.HpMax) <= 0.25)
             playerHPTxt.color = Color.yellow;
         else
             playerHPTxt.color = Color.white;
-        playerMPTxt.text = "MP: " + player.mp.ToString() + "/" + player.mpMax.ToString();
-        if (((float)player.mp / player.mpMax) <= 0.1)
+        playerMPTxt.text = $"MP: {player.Mp} / {player.MpMax}";
+        if (((float)player.Mp / player.MpMax) <= 0.1)
             playerMPTxt.color = Color.red;
-        else if (((float)player.mp / player.mpMax) <= 0.25)
+        else if (((float)player.Mp / player.MpMax) <= 0.25)
             playerMPTxt.color = Color.yellow;
         else
             playerHPTxt.color = Color.white;
 
         string statusText = "";
-        switch(player.entityStatus)
+        switch(player.EntityStatus)
         {
             case Status.NONE:
                 break;

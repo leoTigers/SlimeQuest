@@ -30,7 +30,7 @@ public class EnemySelectBehavior : MonoBehaviour
             frameLock = false;
 
             selected = 0;
-            while (FightManager.enemies[selected].hp == 0)
+            while (FightManager.enemies[selected].Hp == 0)
                 selected++;
             return;
         }
@@ -45,7 +45,7 @@ public class EnemySelectBehavior : MonoBehaviour
             do
             {
                 selected = (selected + 1) % enemyCount;
-            } while (selected != originalSelection && FightManager.enemies[selected].hp == 0);
+            } while (selected != originalSelection && FightManager.enemies[selected].Hp == 0);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -55,7 +55,7 @@ public class EnemySelectBehavior : MonoBehaviour
                 selected--;
                 if (selected < 0)
                     selected = enemyCount - 1;
-            } while (selected != originalSelection && FightManager.enemies[selected].hp == 0);
+            } while (selected != originalSelection && FightManager.enemies[selected].Hp == 0);
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
@@ -68,7 +68,7 @@ public class EnemySelectBehavior : MonoBehaviour
             FindObjectOfType<VerticalNavigationMenuBehavior>().SetActive(true);
         }
         cursor.transform.position = EnemyListComponent.transform.GetChild(selected).transform.position;
-        enemyNameTxt.text = FightManager.enemies[selected].name;
+        enemyNameTxt.text = FightManager.enemies[selected].Name;
     }
 
     IEnumerator PlayerAttack()
@@ -81,7 +81,7 @@ public class EnemySelectBehavior : MonoBehaviour
         }
         if (attackType == 1)
         {
-            if (FightManager.player.mp < 5)
+            if (FightManager.player.Mp < 5)
             {
                 yield return FindObjectOfType<FightManager>().Warning("Not enough mana !");
                 SetActive(true);

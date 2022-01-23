@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using System.IO;
+using System.Xml.Serialization;
 
 public enum Status
 {
@@ -15,72 +17,90 @@ public enum Status
     DEAD
 }
 
-public class Entity
+public interface IHittable
 {
-    public string name;
-    public int hp, hpMax;
-    public int mp, mpMax;
-
-    public int physicalAtt, physicalDef;
-    public int magicalAtt, magicalDef;
-    public int speed, luck;
-    public int level, xp, xpToNextLevel;
-    public Status entityStatus;
-    // Sprite location
-    public string spriteLocation;
-    public bool isDefending;
-
-    public Entity(string name, int hpMax, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, int level, string spriteLocation)
-    {
-        this.name = name;
-        this.hpMax = hpMax;
-        hp = hpMax;
-        this.mpMax = mpMax;
-        mp = mpMax;
-        this.physicalAtt = physicalAtt;
-        this.physicalDef = physicalDef;
-        this.magicalAtt = magicalAtt;
-        this.magicalDef = magicalDef;
-        this.speed = speed;
-        this.luck = luck;
-        this.level = level;
-        this.spriteLocation = spriteLocation;
-        entityStatus = Status.NONE;
-        isDefending = false;
-    }
-
-    public Entity(string name, int hp, int hpMax, int mp, int mpMax, int physicalAtt, int physicalDef, int magicalAtt, int magicalDef, int speed, int luck, Status entityStatus, string spriteLocation)
-    {
-        this.name = name;
-        this.hp = hp;
-        this.hpMax = hpMax;
-        this.mp = mp;
-        this.mpMax = mpMax;
-        this.physicalAtt = physicalAtt;
-        this.physicalDef = physicalDef;
-        this.magicalAtt = magicalAtt;
-        this.magicalDef = magicalDef;
-        this.speed = speed;
-        this.luck = luck;
-        this.entityStatus = entityStatus;
-        this.spriteLocation = spriteLocation;
-        isDefending = false;
-    }
-
     /**
      * Reduce hp by the amount
      * Return true if this result in a death, false otherwise
      * */
-    public bool TakeDamage(int amount)
+    public bool TakeDamage(int damage);
+    public bool IsDefending { get; set; }
+}
+
+public interface ILevelable
+{
+    public int Xp { get; set; }
+    public int Level { get; set; }
+}
+
+public class EntityStatistics
+{
+
+}
+
+[Serializable]
+public class Entity: IHittable, ILevelable
+{
+    public Entity()
     {
-        hp -= amount;
-        if (hp < 0)
+
+    }
+
+    public Entity(string spriteLocation="", string name="Unknown", int hp=-1, int hpMax=100, int mp=-1, int mpMax=25, int physicalAttack=5, int physicalDefense=5,
+        int magicalAttack=5, int magicalDefense=5)
+    {
+        Hp = hp==-1?hpMax:hp;
+        HpMax = hpMax;
+        Mp = mp==-1?mpMax:mp;
+        MpMax = mpMax;
+        PhysicalAttack = physicalAttack;
+        PhysicalDefense = physicalDefense;
+        MagicalAttack = magicalAttack;
+        MagicalDefense = magicalDefense;
+        SpriteLocation = spriteLocation;
+        Name = name;
+        EntityStatus = Status.NONE;
+        Xp = 0;
+        Level = 1;
+        IsDefending = false;
+    }
+
+    // Sprite location
+    public string SpriteLocation { get; set; }
+    public Status EntityStatus { get; set; }
+    public string Name { get ; set ; }
+    public int Xp { get ; set ; }
+    public int Level { get ; set ; }
+    public bool IsDefending { get ; set ; }
+    public int Hp { get; set; }
+    public int HpMax { get; set; }
+    public int Mp { get; set; }
+    public int MpMax { get; set; }
+    public int PhysicalAttack { get; set; }
+    public int PhysicalDefense { get; set; }
+    public int MagicalAttack { get; set; }
+    public int MagicalDefense { get; set; }
+
+    public bool TakeDamage(int damage)
+    {
+        Hp -= damage;
+        if (Hp < 0)
         {
-            hp = 0;
-            entityStatus = Status.DEAD;
+            Hp = 0;
+            EntityStatus = Status.DEAD;
             return true;
         }
         return false;
+    }
+
+    static public void Save(Entity e, string filename="save.json")
+    {
+
+        XmlSerializer ser = new XmlSerializer(typeof(Entity));
+        TextWriter writer = new StreamWriter(filename);
+
+        ser.Serialize(writer, e);
+        writer.Close();
     }
 }
 
