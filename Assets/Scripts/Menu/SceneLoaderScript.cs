@@ -8,7 +8,7 @@ public class SceneLoaderScript : MonoBehaviour
     static public Save playerSave;
     public void Play()
     {
-        playerSave = new Save().Load();
+        playerSave = new Save().Load("s1.xml");
         SceneManager.LoadSceneAsync(playerSave.CurrentMap);
     }
 

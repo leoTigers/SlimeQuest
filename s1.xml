@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Save xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Position>
+    <x>-9.480535</x>
+    <y>-8.525138</y>
+    <z>-1</z>
+  </Position>
+  <CurrentMap>Start</CurrentMap>
+  <e>
+    <SpriteLocation />
+    <EntityStatus>NONE</EntityStatus>
+    <Name>Slime</Name>
+    <Xp>0</Xp>
+    <Level>1</Level>
+    <IsDefending>false</IsDefending>
+    <Hp>69</Hp>
+    <HpMax>69</HpMax>
+    <Mp>25</Mp>
+    <MpMax>25</MpMax>
+    <PhysicalAttack>15</PhysicalAttack>
+    <PhysicalDefense>1000</PhysicalDefense>
+    <MagicalAttack>10</MagicalAttack>
+    <MagicalDefense>10</MagicalDefense>
+  </e>
+</Save>

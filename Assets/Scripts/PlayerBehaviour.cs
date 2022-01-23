@@ -37,6 +37,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         //update the position
         transform.position = transform.position + new Vector3(horizontalInput * movementSpeed * Time.deltaTime, verticalInput * movementSpeed * Time.deltaTime, 0);
+        SceneLoaderScript.playerSave.Position = transform.position;
        
         //animate the sprite
         //animate();

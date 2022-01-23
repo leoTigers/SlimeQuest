@@ -12,6 +12,7 @@ public class SceneLoader : MonoBehaviour
     {
         Instantiate(playerPrefab, SceneLoaderScript.playerSave.Position,
             Quaternion.identity);
+        
     }
 
     // Update is called once per frame
