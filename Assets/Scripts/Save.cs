@@ -14,6 +14,7 @@ public class Save
     public Vector3 Position { get; set; }
     public string CurrentMap { get; set; }
     public Entity e { get; set; }
+    public List<Item> Inventory { get; set; }
 
     public Save()
     {
@@ -37,11 +38,15 @@ public class Save
         }
         else
         {
+            List<Item> l = new List<Item>();
+            l.Add(new Item("Coffee", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 4));
+
             s = new()
             {
                 Position = new Vector3(-4, 2.5f, -1),
                 CurrentMap = "Start",
-                e = new Entity(name: "Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 15, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10)
+                e = new Entity(name: "Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 15, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10),
+                Inventory = l
             };
         };
         return s;
