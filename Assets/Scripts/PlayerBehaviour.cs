@@ -16,6 +16,8 @@ public class PlayerBehaviour : MonoBehaviour
     private float animScale = 0.99f;
     private int animFrame;
 
+    static public KeyCode? inMenu = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +30,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.sceneCount > 1)
+        if (SceneManager.sceneCount > 1 || inMenu != null)
             return;
         //get the Input from Horizontal axis
         float horizontalInput = Input.GetAxis("Horizontal");

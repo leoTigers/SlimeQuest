@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Save xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Position>
-    <x>-9.480535</x>
-    <y>-8.525138</y>
+    <x>-1.86106825</x>
+    <y>2.5</y>
     <z>-1</z>
   </Position>
   <CurrentMap>Start</CurrentMap>
@@ -22,4 +22,26 @@
     <MagicalAttack>10</MagicalAttack>
     <MagicalDefense>10</MagicalDefense>
   </e>
+  <Inventory>
+    <Item>
+      <Name>Coffee</Name>
+      <Description>AAAAAAAAAAAAAAAAAAAAAAAAAAAAA</Description>
+      <Count>4</Count>
+    </Item>
+    <Item>
+      <Name>Bean</Name>
+      <Description>B E A N</Description>
+      <Count>12</Count>
+    </Item>
+    <Item>
+      <Name>Chocolate</Name>
+      <Description>You love it, don't lie</Description>
+      <Count>69</Count>
+    </Item>
+    <Item>
+      <Name>Pain</Name>
+      <Description>Crystalized suffering</Description>
+      <Count>999</Count>
+    </Item>
+  </Inventory>
 </Save>
