@@ -25,5 +25,4 @@ public class MenuManager : MonoBehaviour
             PlayerBehaviour.inMenu = active ? key : null;
         }
     }
-
 }

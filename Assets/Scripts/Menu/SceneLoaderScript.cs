@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoaderScript : MonoBehaviour
 {
-    static public Save playerSave;
+    static public Player playerSave;
     public void Play()
     {
-        playerSave = new Save().Load("s1.xml");
+        playerSave = Player.Load("s1.json");
         SceneManager.LoadSceneAsync(playerSave.CurrentMap);
     }
 

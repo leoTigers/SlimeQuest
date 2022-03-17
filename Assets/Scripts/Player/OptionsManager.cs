@@ -8,6 +8,7 @@ public class OptionsManager : MonoBehaviour
     
     static public void SaveGame()
     {
-        SceneLoaderScript.playerSave.SaveState("s1.xml");
+        SceneLoaderScript.playerSave.SaveState("s1.json");
+        PlayerBehaviour.inMenu = null;
     }
 }
