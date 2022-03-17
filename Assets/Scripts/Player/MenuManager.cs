@@ -17,11 +17,14 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+<<<<<<< Updated upstream:Assets/Scripts/MenuManager.cs
         if (Input.GetKeyDown(KeyCode.P))
+=======
+        if ((Input.GetKeyDown(key) && (PlayerBehaviour.inMenu == null || PlayerBehaviour.inMenu == key)))
+>>>>>>> Stashed changes:Assets/Scripts/Player/MenuManager.cs
         {
             viewport.SetActive(!active);
             active = !active;
         }
     }
-
 }

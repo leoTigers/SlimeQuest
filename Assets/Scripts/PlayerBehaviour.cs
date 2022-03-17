@@ -4,10 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerBehaviour : MonoBehaviour
-{
-
-    public CharacterStatistics cs;
-    
+{    
     //
     private float movementSpeed = 10f;
 

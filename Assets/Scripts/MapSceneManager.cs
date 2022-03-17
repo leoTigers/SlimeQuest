@@ -5,13 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MapSceneManager : MonoBehaviour
 {
-    static public Entity player;
+    static public Player player;
     public GameObject sceneToDisable;
     private bool isActive;
     // Start is called before the first frame update
     void Start()
     {
-        player = SceneLoaderScript.playerSave.e; //new Entity(name:"Slime", hp:69, hpMax:69, mp:25, mpMax:25, physicalAttack:15, physicalDefense:1000, magicalAttack:10, magicalDefense:10);
+        player = SceneLoaderScript.playerSave; //new Entity(name:"Slime", hp:69, hpMax:69, mp:25, mpMax:25, physicalAttack:15, physicalDefense:1000, magicalAttack:10, magicalDefense:10);
 
         isActive = true;
     }
