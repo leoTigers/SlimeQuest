@@ -29,7 +29,7 @@ public class FightManager : MonoBehaviour
         enemies = new List<Entity>();
         enemiesObjects = new List<GameObject>();
         turnList = new List<Entity>();
-        player = MapSceneManager.player;
+        player = MapSceneManager.player.PlayerEntity;
         if (player == null)
             player = new Entity(name:"Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 15, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10);
 
@@ -178,6 +178,7 @@ public class FightManager : MonoBehaviour
         if (dead)
         {
             enemiesObjects[targetId].GetComponent<Image>().enabled = false;
+            MapSceneManager.player.kills.AddKillCount(target.Name);
 
             int enemiesAlive = 0;
             foreach (Entity e in enemies)
@@ -234,6 +235,7 @@ public class FightManager : MonoBehaviour
         if (dead)
         {
             enemiesObjects[targetId].GetComponent<Image>().enabled = false;
+            MapSceneManager.player.kills.AddKillCount(target.Name);
 
             int enemiesAlive = 0;
             foreach (Entity e in enemies)
