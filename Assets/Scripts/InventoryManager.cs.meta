@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/InventoryManager.cs.meta
 guid: d6be2fde58bbe0942ad5b573ebb6d16c
+=======
+guid: ad5ddf80a3557164a891312044cb118e
+>>>>>>> 64bbe53b8bacb18babe817e74698546e879f441b:Assets/Scripts/Player/KillStatistics.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
