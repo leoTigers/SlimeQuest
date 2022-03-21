@@ -33,11 +33,6 @@ public interface ILevelable
     public int Level { get; set; }
 }
 
-public class EntityStatistics
-{
-
-}
-
 [Serializable]
 public class Entity: IHittable, ILevelable
 {

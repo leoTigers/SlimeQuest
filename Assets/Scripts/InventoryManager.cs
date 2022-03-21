@@ -9,18 +9,36 @@ public class InventoryManager : MonoBehaviour
     private int selected;
     private List<GameObject> itemList;
     public GameObject ItemPrefab;
-    public bool isActive;
     public TMPro.TextMeshProUGUI descriptionBox;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        isActive = true;
         selected = 0;
         itemList = new List<GameObject>();
-        foreach(Item item in SceneLoaderScript.playerSave.Inventory)
+        /*for (int i = 0; i < GameObject.Find("ItemList").transform.childCount; i++)
+            Destroy(GameObject.Find("ItemList").transform.GetChild(i).gameObject);
+
+        foreach (BaseItem item in SceneLoaderScript.playerSave.Inventory)
         {
-            Debug.Log(item);
+            GameObject go = Instantiate(ItemPrefab, GameObject.Find("ItemList").transform);
+            go.transform.Find("SelectedIcon").gameObject.SetActive(false);
+            go.transform.Find("Name").GetComponent<TMPro.TextMeshProUGUI>().text = item.Name;
+            go.transform.Find("Count").GetComponent<TMPro.TextMeshProUGUI>().text = item.Count.ToString();
+            itemList.Add(go);
+        }
+        itemList[0].SetActive(true);*/
+    }
+
+    void OnEnable()
+    {
+        selected = 0;
+        foreach (GameObject go in itemList)
+            Destroy(go);
+        itemList.Clear();
+
+        foreach (BaseItem item in SceneLoaderScript.playerSave.Inventory)
+        {
             GameObject go = Instantiate(ItemPrefab, GameObject.Find("ItemList").transform);
             go.transform.Find("SelectedIcon").gameObject.SetActive(false);
             go.transform.Find("Name").GetComponent<TMPro.TextMeshProUGUI>().text = item.Name;
@@ -33,8 +51,6 @@ public class InventoryManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isActive)
-            return;
         //yield return new WaitForSecondsRealtime(0.06f);
         itemList[selected].GetComponent<SelectableBehavior>().isSelected = false;
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -50,9 +66,5 @@ public class InventoryManager : MonoBehaviour
         itemList[selected].GetComponent<SelectableBehavior>().isSelected = true;
         descriptionBox.text = SceneLoaderScript.playerSave.Inventory[selected].Description;
 
-    }
-    public void SetActive(bool active)
-    {
-        isActive = active;
     }
 }

@@ -15,8 +15,8 @@ public class Player
     public Vector3 Position { get; set; }
     public string CurrentMap { get; set; }
     public Entity PlayerEntity { get; set; }
-    public List<Item> Inventory { get; set; }
-    public KillStatistics kills { get; set; }
+    public List<BaseItem> Inventory { get; set; }
+    public KillStatistics Kills { get; set; }
 
     public Player()
     {
@@ -37,19 +37,31 @@ public class Player
         }
         else
         {
-            List<Item> l = new List<Item>();
-            l.Add(new Item("Coffee", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 4));
+            List<BaseItem> l = new List<BaseItem>();
+            l.Add(new Item.Wood(4));
 
             player = new()
             {
                 Position = new Vector3(-4, 2.5f, -1),
                 CurrentMap = "Start",
-                PlayerEntity = new Entity(name: "Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 15, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10),
+                PlayerEntity = new Entity(name: "Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 35, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10),
                 Inventory = l,
-                kills = new KillStatistics()
+                Kills = new KillStatistics()
             };
         }
         return player;
+    }
+
+    public void AddLoot(List<BaseItem> items)
+    {
+        foreach(BaseItem item in items)
+        {
+            int index;
+            if((index = Inventory.FindIndex(x => x.Name == item.Name)) >= 0)
+                Inventory[index].Count += item.Count;
+            else
+                Inventory.Add(item);
+        }
     }
 
     public void SaveState(string filename)

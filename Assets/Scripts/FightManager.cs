@@ -10,7 +10,7 @@ using System.IO;
 public class FightManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    static public List<Entity> enemies;
+    static public List<BaseEnemy> enemies;
     static public List<GameObject> enemiesObjects;
     static public Entity player;
     public GameObject contentComponent;
@@ -20,47 +20,52 @@ public class FightManager : MonoBehaviour
     public GameObject playerHealAnimation;
     public GameObject fireballAnimation;
     public GameObject slashAnimation;
+    public List<BaseItem> loot;
 
     private List<Entity> turnList;
     private int turn;
     static public bool playerInMenu, playerTurnEnd;
     void Start()
     {
-        enemies = new List<Entity>();
+        loot = new List<BaseItem>();
+        enemies = new List<BaseEnemy>();
         enemiesObjects = new List<GameObject>();
         turnList = new List<Entity>();
         player = MapSceneManager.player.PlayerEntity;
         if (player == null)
             player = new Entity(name:"Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 15, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10);
 
-        int enemyCount = Random.Range(1, 4);
+        int enemyCount = Random.Range(1, 2);
         for(int i = 0; i < enemyCount; i++)
         {
-            switch(Random.Range(0, 6))
+            switch(Random.Range(5, 6))
             {
                 case 0:
-                    enemies.Add(new Entity(name:"Flower", hpMax:20, mpMax:10, physicalAttack: 5, physicalDefense: 5, magicalAttack: 5, magicalDefense: 5, spriteLocation:"Sprites/flower_enemy_v1")); 
+                    enemies.Add(new Enemy.Flower(1)); 
                     break;
                 case 1:
-                    enemies.Add(new Entity(name: "Bird", hpMax: 20, mpMax: 10, physicalAttack: 5, physicalDefense: 5, magicalAttack: 5, magicalDefense: 5, spriteLocation: "Sprites/fire_bird_enemy_v1"));
+                    enemies.Add(new Enemy.Bird(1));
                     break;
                 case 2:
-                    enemies.Add(new Entity(name: "Lion", hpMax: 20, mpMax: 10, physicalAttack: 7, physicalDefense: 7, magicalAttack: 5, magicalDefense: 5, spriteLocation: "Sprites/lion_enemy"));
+                    enemies.Add(new Enemy.Lion(1));
                     break;
                 case 3:
-                    enemies.Add(new Entity(name: "Meduse", hpMax: 20, mpMax: 10, physicalAttack: 5, physicalDefense: 5, magicalAttack: 5, magicalDefense: 5, spriteLocation: "Sprites/meduse_enemy"));
+                    enemies.Add(new Enemy.Meduse(1));
                     break;
                 case 4:
-                    enemies.Add(new Entity(name: "Siren", hpMax: 30, mpMax: 10, physicalAttack: 3, physicalDefense: 10, magicalAttack: 10, magicalDefense: 10, spriteLocation: "Sprites/siren_enemy"));
+                    enemies.Add(new Enemy.Siren(1));
                     break;
                 case 5:
-                    enemies.Add(new Entity(name: "I AM GROOT", hpMax: 20, mpMax: 10, physicalAttack: 2, physicalDefense: 2, magicalAttack: 10, magicalDefense: 10, spriteLocation: "Sprites/treant_enemy_v1"));
+                    enemies.Add(new Enemy.Treant(1));
                     break;
             }
         }
 
         turnList.Add(player);
-        foreach (Entity Fe in enemies)
+
+        Debug.Log(typeof(Item.Wood).Namespace);
+        Debug.Log(typeof(Item.Wood).Namespace == "Item");
+        foreach (BaseEnemy Fe in enemies)
         {
             if (Fe.SpriteLocation != null)
             {
@@ -178,7 +183,8 @@ public class FightManager : MonoBehaviour
         if (dead)
         {
             enemiesObjects[targetId].GetComponent<Image>().enabled = false;
-            MapSceneManager.player.kills.AddKillCount(target.Name);
+            MapSceneManager.player.Kills.AddKillCount(target.Name);
+            loot.AddRange(enemies[targetId].Loot());
 
             int enemiesAlive = 0;
             foreach (Entity e in enemies)
@@ -187,6 +193,7 @@ public class FightManager : MonoBehaviour
             if (enemiesAlive == 0)
             {
                 // end fight anim
+                MapSceneManager.player.AddLoot(loot);
                 SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
                 FindObjectOfType<MapSceneManager>().SetSceneActive(true);
             }
@@ -235,7 +242,8 @@ public class FightManager : MonoBehaviour
         if (dead)
         {
             enemiesObjects[targetId].GetComponent<Image>().enabled = false;
-            MapSceneManager.player.kills.AddKillCount(target.Name);
+            MapSceneManager.player.Kills.AddKillCount(target.Name);
+            loot.AddRange(enemies[targetId].Loot());
 
             int enemiesAlive = 0;
             foreach (Entity e in enemies)
@@ -244,6 +252,7 @@ public class FightManager : MonoBehaviour
             if (enemiesAlive == 0)
             {
                 // end fight anim
+                MapSceneManager.player.AddLoot(loot);
                 SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
                 FindObjectOfType<MapSceneManager>().SetSceneActive(true);
             }
