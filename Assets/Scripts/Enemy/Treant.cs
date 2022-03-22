@@ -14,8 +14,8 @@ namespace Enemy
             magicalAttack: 3 + level, magicalDefense: 3 + level,
             xpValue: 5 + 5 * level)
         {
-            AddLoot(1f, typeof(Item.Wood), 1, 3);
-            AddLoot(1f, typeof(Item.NatureMateria), 1, 1);
+            AddLoot(0.5f, typeof(Item.Wood), 1, 3);
+            AddLoot(0.1f, typeof(Item.NatureMateria), 1, 1);
         }
     }
 }
