@@ -20,8 +20,8 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(key) && (PlayerBehaviour.inMenu == null || PlayerBehaviour.inMenu == key))
         {
-            viewport.SetActive(!active);
-            active = !active;
+            active = PlayerBehaviour.inMenu == null ? true : !active;
+            viewport.SetActive(active);
             PlayerBehaviour.inMenu = active ? key : null;
         }
     }

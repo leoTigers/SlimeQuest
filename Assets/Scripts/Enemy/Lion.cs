@@ -14,6 +14,7 @@ namespace Enemy
             magicalAttack: 3 + level, magicalDefense: 3 + level,
             xpValue: 5 + 5 * level)
         {
+            AddLoot(1f, typeof(Item.SpiritOfFighting), 1, 1);
         }
     }
 }

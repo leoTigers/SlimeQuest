@@ -54,14 +54,8 @@ public class Player
 
     public void AddLoot(List<BaseItem> items)
     {
-        foreach(BaseItem item in items)
-        {
-            int index;
-            if((index = Inventory.FindIndex(x => x.Name == item.Name)) >= 0)
-                Inventory[index].Count += item.Count;
-            else
-                Inventory.Add(item);
-        }
+        Inventory.AddRange(items);
+        Inventory = BaseItem.Reduce(Inventory);
     }
 
     public void SaveState(string filename)

@@ -16,12 +16,12 @@ public class BaseItem
 
     public string Name { get; set; }
     public string Description { get; set; }
-    public uint Count { get; set; }
+    public int Count { get; set; }
     public int Rarity { get; set; }
     public int Value { get; set; }
 
 
-    public BaseItem(string name, string description, uint count, int value, int rarity = BaseItem.RARITY_COMMON)
+    public BaseItem(string name, string description, int count, int value, int rarity = BaseItem.RARITY_COMMON)
     {
         Name = name;
         Description = description;
@@ -32,5 +32,19 @@ public class BaseItem
     public BaseItem()
     {
 
+    }
+
+    static public List<BaseItem> Reduce(IEnumerable<BaseItem> items)
+    {
+        List<BaseItem> newItems = new List<BaseItem>();
+        foreach (BaseItem item in items)
+        {
+            int index;
+            if ((index = newItems.FindIndex(x => x.Name == item.Name)) >= 0)
+                newItems[index].Count += item.Count;
+            else
+                newItems.Add(item);
+        }
+        return newItems;
     }
 }

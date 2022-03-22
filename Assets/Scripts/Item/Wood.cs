@@ -10,7 +10,7 @@ namespace Item
     {
         public Wood(int count):
             base(name: "Wood", description: "A piece of wood",
-                count: (uint)count, value: 1, rarity: RARITY_COMMON)
+                count: count, value: 1, rarity: RARITY_COMMON)
         { }
 
         public Wood(): this(1) { }

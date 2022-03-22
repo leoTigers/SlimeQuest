@@ -16,12 +16,15 @@ public class FightManager : MonoBehaviour
     public GameObject contentComponent;
     public GameObject actionBox;
     public Text actionText;
-    public GameObject playerHitAnimation;
+    public GameObject playerHitAnimation; 
     public GameObject playerHealAnimation;
     public GameObject fireballAnimation;
     public GameObject slashAnimation;
+    public GameObject lootPanel;    
+    public GameObject lootTable;    
     public List<BaseItem> loot;
 
+    private int xp;
     private List<Entity> turnList;
     private int turn;
     static public bool playerInMenu, playerTurnEnd;
@@ -36,7 +39,10 @@ public class FightManager : MonoBehaviour
             player = new Entity(name:"Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 15, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10);
 
         int enemyCount = Random.Range(1, 2);
-        for(int i = 0; i < enemyCount; i++)
+        enemies.Add(new Enemy.Treant(1));
+        enemies.Add(new Enemy.Lion(1));
+        enemies.Add(new Enemy.Siren(1));
+        /*for(int i = 0; i < enemyCount; i++)
         {
             switch(Random.Range(5, 6))
             {
@@ -60,11 +66,9 @@ public class FightManager : MonoBehaviour
                     break;
             }
         }
-
+        */
         turnList.Add(player);
 
-        Debug.Log(typeof(Item.Wood).Namespace);
-        Debug.Log(typeof(Item.Wood).Namespace == "Item");
         foreach (BaseEnemy Fe in enemies)
         {
             if (Fe.SpriteLocation != null)
@@ -181,23 +185,7 @@ public class FightManager : MonoBehaviour
         damage = damage < 1 ? 1 : damage;
         bool dead = target.TakeDamage((int)damage);
         if (dead)
-        {
-            enemiesObjects[targetId].GetComponent<Image>().enabled = false;
-            MapSceneManager.player.Kills.AddKillCount(target.Name);
-            loot.AddRange(enemies[targetId].Loot());
-
-            int enemiesAlive = 0;
-            foreach (Entity e in enemies)
-                if (e.Hp > 0)
-                    enemiesAlive++;
-            if (enemiesAlive == 0)
-            {
-                // end fight anim
-                MapSceneManager.player.AddLoot(loot);
-                SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
-                FindObjectOfType<MapSceneManager>().SetSceneActive(true);
-            }
-        }
+            HandleEnemyDeath(target, targetId);   
     }
 
     public IEnumerator Attack(Entity attacker)
@@ -240,28 +228,52 @@ public class FightManager : MonoBehaviour
         damage = damage < 1 ? 1 : damage;
         bool dead = target.TakeDamage((int)damage);
         if (dead)
-        {
-            enemiesObjects[targetId].GetComponent<Image>().enabled = false;
-            MapSceneManager.player.Kills.AddKillCount(target.Name);
-            loot.AddRange(enemies[targetId].Loot());
+            yield return HandleEnemyDeath(target, targetId);   
+    }
 
-            int enemiesAlive = 0;
-            foreach (Entity e in enemies)
-                if (e.Hp > 0)
-                    enemiesAlive++;
-            if (enemiesAlive == 0)
-            {
-                // end fight anim
-                MapSceneManager.player.AddLoot(loot);
-                SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
-                FindObjectOfType<MapSceneManager>().SetSceneActive(true);
-            }
+    private IEnumerator HandleEnemyDeath(Entity target, int targetId)
+    {
+        enemiesObjects[targetId].GetComponent<Image>().enabled = false;
+        MapSceneManager.player.Kills.AddKillCount(target.Name);
+        loot.AddRange(enemies[targetId].Loot());
+        xp += enemies[targetId].XpValue;
+
+        int enemiesAlive = 0;
+        foreach (Entity e in enemies)
+            if (e.Hp > 0)
+                enemiesAlive++;
+        if (enemiesAlive == 0)
+        {
+            // end fight anim
+            yield return Loot();
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
+            FindObjectOfType<MapSceneManager>().SetSceneActive(true);
         }
     }
 
     public void Defend()
     {
         player.IsDefending = true;
+    }
+
+    private IEnumerator Loot()
+    {
+        lootPanel.SetActive(true);
+
+        loot = BaseItem.Reduce(loot);
+
+        MapSceneManager.player.AddLoot(loot);
+        MapSceneManager.player.PlayerEntity.Xp += xp;
+
+        lootTable.GetComponent<LootTableBehavior>().DisplayLoot(loot);
+        lootTable.GetComponent<LootTableBehavior>().DisplayXp(xp);
+
+        while(!Input.GetKey(KeyCode.Escape))
+        {
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+
+        lootPanel.SetActive(false);
     }
 
 }

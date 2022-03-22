@@ -15,6 +15,7 @@ namespace Enemy
             xpValue: 5 + 5 * level)
         {
             AddLoot(1f, typeof(Item.Wood), 1, 3);
+            AddLoot(1f, typeof(Item.NatureMateria), 1, 1);
         }
     }
 }
