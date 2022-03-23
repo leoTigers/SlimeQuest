@@ -1,13 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using Unity;
 using UnityEngine;
-using Newtonsoft.Json;
 
 [Serializable]
 public class Player
@@ -17,13 +13,15 @@ public class Player
     public Entity PlayerEntity { get; set; }
     public List<BaseItem> Inventory { get; set; }
     public KillStatistics Kills { get; set; }
+    public List<SlimeType> Types { get; set; }
 
     public Player()
     {
-
+        Inventory = new();
+        Types = new();
     }
 
-    static public Player Load(string filename)
+    public static Player Load(string filename)
     {
         Player player = null;
         if (File.Exists(filename))
@@ -37,7 +35,7 @@ public class Player
         }
         else
         {
-            List<BaseItem> l = new List<BaseItem>();
+            List<BaseItem> l = new();
             l.Add(new Item.Wood(4));
 
             player = new()
@@ -46,7 +44,8 @@ public class Player
                 CurrentMap = "Start",
                 PlayerEntity = new Entity(name: "Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 35, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10),
                 Inventory = l,
-                Kills = new KillStatistics()
+                Kills = new KillStatistics(),
+                Types = new()
             };
         }
         return player;
@@ -65,5 +64,62 @@ public class Player
         using StreamWriter sw = new(filename);
         using JsonWriter writer = new JsonTextWriter(sw);
         serializer.Serialize(writer, this);
+    }
+
+    public void SelectSprite()
+    {
+        string spritePath = "";
+
+        switch (Types.Count())
+        {
+            case 1:
+                spritePath = Types[0] switch
+                {
+                    SlimeType.FIRE => "Sprites/fire_slime_v1",
+                    SlimeType.WATER => "Sprites/water_slime",
+                    SlimeType.PLANT => "Sprites/Green_slime",
+                    _ => "Sprites/slime_test"
+                };
+                break;
+
+            case 2:
+                switch (Types[0])
+                {
+                    case SlimeType.FIRE:
+                        spritePath = Types[1] switch
+                        {
+                            SlimeType.WATER => "Sprites/steam_slime",
+                            _ => "Sprites/slime_test"
+                        };
+                        break;
+
+                    case SlimeType.WATER:
+                        spritePath = Types[1] switch
+                        {
+                            SlimeType.FIRE => "Sprites/sky_slime",
+                            SlimeType.PLANT => "Sprites/heal_slime_v1",
+                            _ => "Sprites/slime_test"
+                        };
+                        break;
+
+                    case SlimeType.PLANT:
+                        spritePath = Types[1] switch
+                        {
+                            SlimeType.WATER => "Sprites/venom_slime",
+                            _ => "Sprites/slime_test"
+                        };
+                        break;
+                }
+                break;
+        }
+
+        GameObject.Find("Player").GetComponentInChildren<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
+    }
+
+    public void AddType(SlimeType type)
+    {
+        Types.Add(type);
+
+        SelectSprite();        
     }
 }

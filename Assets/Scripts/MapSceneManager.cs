@@ -33,6 +33,13 @@ public class MapSceneManager : MonoBehaviour
         //Destroy(enemy);
         enemy.transform.position += new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0);
         SetSceneActive(false);
+        GameObject player = GameObject.Find("Player");
+        player.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        player.GetComponent<PlayerBehaviour>().enabled = false;
+        foreach(MenuManager m in player.GetComponents<MenuManager>())
+        {
+            m.enabled = false;
+        }
         SceneManager.LoadSceneAsync("Fight", LoadSceneMode.Additive);
     }
 }
