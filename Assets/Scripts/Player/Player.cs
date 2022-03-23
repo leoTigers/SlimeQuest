@@ -13,7 +13,7 @@ public class Player
     public Entity PlayerEntity { get; set; }
     public List<BaseItem> Inventory { get; set; }
     public KillStatistics Kills { get; set; }
-    public List<string> Types { get; set; }
+    public List<SlimeType> Types { get; set; }
 
     public Player()
     {
@@ -66,9 +66,8 @@ public class Player
         serializer.Serialize(writer, this);
     }
 
-    public void AddType(string type)
+    public void SelectSprite()
     {
-        Types.Add(type);
         string spritePath = "";
 
         switch (Types.Count())
@@ -76,9 +75,9 @@ public class Player
             case 1:
                 spritePath = Types[0] switch
                 {
-                    "Fire" => "Sprites/fire_slime_v1",
-                    "Water" => "Sprites/water_slime",
-                    "Plant" => "Sprites/Green_slime",
+                    SlimeType.FIRE => "Sprites/fire_slime_v1",
+                    SlimeType.WATER => "Sprites/water_slime",
+                    SlimeType.PLANT => "Sprites/Green_slime",
                     _ => "Sprites/slime_test"
                 };
                 break;
@@ -86,27 +85,27 @@ public class Player
             case 2:
                 switch (Types[0])
                 {
-                    case "Fire":
+                    case SlimeType.FIRE:
                         spritePath = Types[1] switch
                         {
-                            "Water" => "Sprites/steam_slime",
+                            SlimeType.WATER => "Sprites/steam_slime",
                             _ => "Sprites/slime_test"
                         };
                         break;
 
-                    case "Water":
+                    case SlimeType.WATER:
                         spritePath = Types[1] switch
                         {
-                            "Fire" => "Sprites/sky_slime",
-                            "Plant" => "Sprites/heal_slime_v1",
+                            SlimeType.FIRE => "Sprites/sky_slime",
+                            SlimeType.PLANT => "Sprites/heal_slime_v1",
                             _ => "Sprites/slime_test"
                         };
                         break;
 
-                    case "Plant":
+                    case SlimeType.PLANT:
                         spritePath = Types[1] switch
                         {
-                            "Water" => "Sprites/venom_slime",
+                            SlimeType.WATER => "Sprites/venom_slime",
                             _ => "Sprites/slime_test"
                         };
                         break;
@@ -114,6 +113,13 @@ public class Player
                 break;
         }
 
-        GameObject.Find("Player").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
+        GameObject.Find("Player").GetComponentInChildren<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
+    }
+
+    public void AddType(SlimeType type)
+    {
+        Types.Add(type);
+
+        SelectSprite();        
     }
 }

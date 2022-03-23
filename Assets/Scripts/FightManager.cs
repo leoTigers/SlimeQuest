@@ -248,7 +248,14 @@ public class FightManager : MonoBehaviour
             yield return Loot();
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
             FindObjectOfType<MapSceneManager>().SetSceneActive(true);
-            GameObject.Find("Player").SetActive(true);
+            GameObject go = GameObject.Find("Player");
+
+            go.GetComponentInChildren<SpriteRenderer>().enabled = true;
+            go.GetComponent<PlayerBehaviour>().enabled = true;
+            foreach (MenuManager m in go.GetComponents<MenuManager>())
+            {
+                m.enabled = true;
+            }
         }
     }
 

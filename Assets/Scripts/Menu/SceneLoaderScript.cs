@@ -15,8 +15,9 @@ public class SceneLoaderScript : MonoBehaviour
         player.transform.GetChild(0).gameObject.SetActive(true); // camera
         player.transform.GetChild(1).gameObject.SetActive(true); // exit UI
         player.transform.GetChild(2).gameObject.SetActive(true); // option manager
-        player.GetComponent<SpriteRenderer>().enabled = true;
+        player.GetComponentInChildren<SpriteRenderer>().enabled = true;
         player.GetComponent<PlayerBehaviour>().enabled = true;
+        playerSave.SelectSprite();
         SceneManager.LoadSceneAsync(playerSave.CurrentMap);
     }
 

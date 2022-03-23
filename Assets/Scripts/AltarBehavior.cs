@@ -25,7 +25,7 @@ public class AltarBehavior : MonoBehaviour
     [Inspectable]
     public int XpCost;
     [Inspectable]
-    public string TypeEarned;
+    public SlimeType TypeEarned;
     // Start is called before the first frame update
     void Start()
     {
