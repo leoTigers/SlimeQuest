@@ -33,6 +33,8 @@ public class MapSceneManager : MonoBehaviour
         //Destroy(enemy);
         enemy.transform.position += new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0);
         SetSceneActive(false);
+        GameObject player = GameObject.Find("Player");
+        player.SetActive(false);
         SceneManager.LoadSceneAsync("Fight", LoadSceneMode.Additive);
     }
 }

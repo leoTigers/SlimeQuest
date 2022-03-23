@@ -248,6 +248,7 @@ public class FightManager : MonoBehaviour
             yield return Loot();
             SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("Fight"));
             FindObjectOfType<MapSceneManager>().SetSceneActive(true);
+            GameObject.Find("Player").SetActive(true);
         }
     }
 

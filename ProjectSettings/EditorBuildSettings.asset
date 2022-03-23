@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 415c3ca9d5c0de84aa90cab4311f96c5
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 8674f98d9c79e2f458f26190aa93f1de
+  - enabled: 1
+    path: Assets/Scenes/World/beach.unity
+    guid: eaae5d019e013a645a7776d7b7e4364c
+  - enabled: 1
+    path: Assets/Scenes/World/Lava.unity
+    guid: 869c41017926c0b4996e16ef578c8d57
   m_configObjects: {}
