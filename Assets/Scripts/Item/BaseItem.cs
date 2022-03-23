@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+[System.Serializable]
 public class BaseItem
 {
     public const int RARITY_COMMON = 0;
