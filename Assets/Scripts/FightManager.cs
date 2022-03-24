@@ -39,6 +39,7 @@ public class FightManager : MonoBehaviour
             player = new Entity(name:"Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 15, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10);
 
         int enemyCount = Random.Range(1, 2);
+        Debug.Log(MapSceneManager.player.CurrentMap);
         switch(MapSceneManager.player.CurrentMap)
         {
             case "Start":
@@ -57,7 +58,7 @@ public class FightManager : MonoBehaviour
                 }
                 GameObject.Find("Background").GetComponent<Image>().sprite = Resources.Load<Sprite>("Backgrounds/Background_cave");
                 break;
-            case "beach":
+            case "Beach":
                 switch (Random.Range(0, 3))
                 {
                     case 0:
