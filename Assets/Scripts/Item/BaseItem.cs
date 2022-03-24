@@ -32,7 +32,11 @@ public class BaseItem
     }
     public BaseItem()
     {
-
+        Name = "";
+        Description = "";
+        Count = 0;
+        Rarity = RARITY_COMMON;
+        Value = 0;
     }
 
     static public List<BaseItem> Reduce(IEnumerable<BaseItem> items)

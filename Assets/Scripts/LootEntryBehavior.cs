@@ -18,20 +18,28 @@ public class LootEntryBehavior : MonoBehaviour
         
     }
 
-    public void SetItem(string name, int count, int rarity = BaseItem.RARITY_COMMON)
+    public void SetItem(string name, int count,
+        int rarity = BaseItem.RARITY_COMMON,
+        string? color = null, int? countOver = null)
     {
-        string color = "<color=";
-        color += rarity switch
+        if(color == null)
         {
-            BaseItem.RARITY_COMMON => "grey",
-            BaseItem.RARITY_UNCOMMON => "blue",
-            BaseItem.RARITY_RARE => "green",
-            BaseItem.RARITY_EXOTIC => "orange",
-            BaseItem.RARITY_LEGENDARY => "purple",
-            _ => "white",
-        };
+            color = "<color=";
+            color += rarity switch
+            {
+                BaseItem.RARITY_COMMON => "grey",
+                BaseItem.RARITY_UNCOMMON => "blue",
+                BaseItem.RARITY_RARE => "green",
+                BaseItem.RARITY_EXOTIC => "orange",
+                BaseItem.RARITY_LEGENDARY => "purple",
+                _ => "white",
+            };
+        }else
+        {
+            color = $"<color={color}";
+        }
         LootName.text = $"{color}>{name}</color>";
-        LootCount.text = $"{count}";
+        LootCount.text = countOver == null? $"{count}" : $"{count} / {countOver}";
     }
 
 }

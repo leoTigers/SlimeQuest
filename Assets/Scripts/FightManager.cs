@@ -273,8 +273,8 @@ public class FightManager : MonoBehaviour
         MapSceneManager.player.AddLoot(loot);
         MapSceneManager.player.PlayerEntity.Xp += xp;
 
-        lootTable.GetComponent<LootTableBehavior>().DisplayLoot(loot);
-        lootTable.GetComponent<LootTableBehavior>().DisplayXp(xp);
+        lootTable.GetComponent<ItemTableBehavior>().DisplayLoot(loot);
+        lootTable.GetComponent<ItemTableBehavior>().DisplayXp(xp);
 
         while(!Input.GetKey(KeyCode.Escape))
         {

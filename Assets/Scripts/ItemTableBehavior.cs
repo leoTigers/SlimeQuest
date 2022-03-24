@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LootTableBehavior : MonoBehaviour
+public class ItemTableBehavior : MonoBehaviour
 {
     public GameObject lootEntryPrefab;
     public GameObject table;
@@ -26,6 +26,20 @@ public class LootTableBehavior : MonoBehaviour
             GameObject go = Instantiate(lootEntryPrefab, table.transform);
             go.GetComponent<LootEntryBehavior>().SetItem(item.Name, item.Count, item.Rarity);
         }
+    }
+
+    public void DisplayRequirements(List<string> names, List<int> currentAmount, List<int> requiredAmount)
+    {
+        for(int i = 0; i < names.Count; i++)
+        {
+            GameObject go = Instantiate(lootEntryPrefab, table.transform);
+            go.GetComponent<LootEntryBehavior>().SetItem(names[i], currentAmount[i], color: currentAmount[i]>=requiredAmount[i]?"green":"red", countOver: requiredAmount[i]);
+        }
+    }
+
+    public void DisplayTime(double counter)
+    {
+        xpText.text = $"{counter}";
     }
 
     public void DisplayXp(int value)

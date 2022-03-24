@@ -62828,8 +62828,32 @@ PrefabInstance:
       value: altar
       objectReference: {fileID: 0}
     - target: {fileID: 5308472632871592384, guid: ba2f371e6489de44a9d7803d4d0528ea, type: 3}
+      propertyPath: XpCost
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308472632871592384, guid: ba2f371e6489de44a9d7803d4d0528ea, type: 3}
       propertyPath: TypeEarned
-      value: Plant
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308472632871592384, guid: ba2f371e6489de44a9d7803d4d0528ea, type: 3}
+      propertyPath: ItemRequirements.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308472632871592384, guid: ba2f371e6489de44a9d7803d4d0528ea, type: 3}
+      propertyPath: ItemRequirements.Array.data[0].Amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308472632871592384, guid: ba2f371e6489de44a9d7803d4d0528ea, type: 3}
+      propertyPath: ItemRequirements.Array.data[1].Amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308472632871592384, guid: ba2f371e6489de44a9d7803d4d0528ea, type: 3}
+      propertyPath: ItemRequirements.Array.data[0].ItemName
+      value: Nature materia
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308472632871592384, guid: ba2f371e6489de44a9d7803d4d0528ea, type: 3}
+      propertyPath: ItemRequirements.Array.data[1].ItemName
+      value: Wood
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba2f371e6489de44a9d7803d4d0528ea, type: 3}

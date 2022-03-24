@@ -20,8 +20,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         animFrame = 0;
 
-        Vector2 v = GetComponent<Renderer>().bounds.size;
-        Debug.Log(v);
+        //Vector2 v = GetComponent<Renderer>().bounds.size;
+        //Debug.Log(v);
     }
 
     // Update is called once per frame
