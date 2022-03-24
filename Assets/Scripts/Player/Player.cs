@@ -68,7 +68,7 @@ public class Player
 
     public void SelectSprite()
     {
-        string spritePath = "";
+        string spritePath = "Sprites/slime_test";
 
         switch (Types.Count())
         {
