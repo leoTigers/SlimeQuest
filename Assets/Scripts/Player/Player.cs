@@ -89,6 +89,7 @@ public class Player
                         spritePath = Types[1] switch
                         {
                             SlimeType.WATER => "Sprites/steam_slime",
+                            SlimeType.PLANT => "Sprites/coal_slime_v2",
                             _ => "Sprites/slime_test"
                         };
                         break;
@@ -106,10 +107,14 @@ public class Player
                         spritePath = Types[1] switch
                         {
                             SlimeType.WATER => "Sprites/venom_slime",
+                            SlimeType.FIRE => "Sprites/coal_slime_v2",
                             _ => "Sprites/slime_test"
                         };
                         break;
                 }
+                break;
+            case 3:
+                spritePath = "Sprites/karen_slime";
                 break;
         }
 

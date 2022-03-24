@@ -25,6 +25,7 @@ public class MapChangeBehavior : MonoBehaviour
         if (otherObj.name == "Player")
         {
             otherObj.transform.position = nextPosition;
+            MapSceneManager.player.CurrentMap = nextMap;
             SceneManager.LoadScene(nextMap);
         }
     }
