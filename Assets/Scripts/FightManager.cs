@@ -39,9 +39,57 @@ public class FightManager : MonoBehaviour
             player = new Entity(name:"Slime", hp: 69, hpMax: 69, mp: 25, mpMax: 25, physicalAttack: 15, physicalDefense: 1000, magicalAttack: 10, magicalDefense: 10);
 
         int enemyCount = Random.Range(1, 2);
-        enemies.Add(new Enemy.Treant(1));
-        enemies.Add(new Enemy.Lion(1));
-        enemies.Add(new Enemy.Siren(1));
+        switch(MapSceneManager.player.CurrentMap)
+        {
+            case "Start":
+                switch(Random.Range(0, 3))
+                {
+                    case 0:
+                        enemies.Add(new Enemy.Treant(1));
+                        break;
+                    case 1:
+                        enemies.Add(new Enemy.Flower(1));
+                        break;
+                    case 2:
+                        enemies.Add(new Enemy.Flower(1));
+                        enemies.Add(new Enemy.Treant(1));
+                        break;
+                }
+                GameObject.Find("Background").GetComponent<Image>().sprite = Resources.Load<Sprite>("Backgrounds/Background_cave");
+                break;
+            case "beach":
+                switch (Random.Range(0, 3))
+                {
+                    case 0:
+                        enemies.Add(new Enemy.Meduse(1));
+                        break;
+                    case 1:
+                        enemies.Add(new Enemy.Siren(1));
+                        break;
+                    case 2:
+                        enemies.Add(new Enemy.Meduse(1));
+                        enemies.Add(new Enemy.Siren(1));
+                        break;
+                }
+                GameObject.Find("Background").GetComponent<Image>().sprite = Resources.Load<Sprite>("Backgrounds/background_sea");
+                break;
+            case "Lava":
+                switch (Random.Range(0, 3))
+                {
+                    case 0:
+                        enemies.Add(new Enemy.Lion(1));
+                        break;
+                    case 1:
+                        enemies.Add(new Enemy.Bird(1));
+                        break;
+                    case 2:
+                        enemies.Add(new Enemy.Lion(1));
+                        enemies.Add(new Enemy.Bird(1));
+                        break;
+                }
+                GameObject.Find("Background").GetComponent<Image>().sprite = Resources.Load<Sprite>("Backgrounds/Background_volcano");
+                break;
+        }
         /*for(int i = 0; i < enemyCount; i++)
         {
             switch(Random.Range(5, 6))
